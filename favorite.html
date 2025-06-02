@@ -1,0 +1,1200 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>รายการโปรด - Mommeal</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #f8f9fa;
+            color: #333;
+            line-height: 1.5;
+        }
+
+        /* Mobile Container */
+        .mobile-container {
+            max-width: 414px;
+            margin: 0 auto;
+            background: #f5f3f0;
+            min-height: 100vh;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(245, 243, 240, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+        }
+
+        .back-btn {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            padding: 8px;
+            margin-right: 15px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        .header-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #666;
+            letter-spacing: 1px;
+        }
+
+        .recipe-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            max-width: 200px;
+            line-height: 1.3;
+        }
+
+        .favorite-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            color: #ff6b6b;
+        }
+
+        .favorite-btn:hover {
+            background: rgba(255, 107, 107, 0.1);
+            transform: scale(1.1);
+        }
+
+        .favorite-btn.inactive {
+            color: #ccc;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 20px;
+            padding-bottom: 100px;
+        }
+
+        /* Recipe Image */
+        .recipe-image {
+            width: 100%;
+            height: 250px;
+            background: linear-gradient(135deg, #ff8a65, #ffb74d);
+            border-radius: 15px;
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .recipe-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .recipe-placeholder {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 250"><defs><pattern id="food" patternUnits="userSpaceOnUse" width="40" height="40"><circle cx="20" cy="20" r="15" fill="%23ff6b6b" opacity="0.7"/><circle cx="10" cy="10" r="8" fill="%23ffa726" opacity="0.8"/><circle cx="30" cy="30" r="6" fill="%23ffca28" opacity="0.9"/></pattern></defs><rect width="400" height="250" fill="%23fff3e0"/><rect width="400" height="250" fill="url(%23food)" opacity="0.3"/><text x="200" y="130" text-anchor="middle" fill="%23bf360c" font-family="Arial" font-size="48">🥗🍖🥕</text></svg>') center/cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+        }
+
+        /* Recipe Info */
+        .recipe-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            background: rgba(255, 255, 255, 0.7);
+            padding: 15px 20px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .time-difficulty {
+            font-size: 16px;
+            color: #666;
+            font-weight: 500;
+        }
+
+        .allergen-info {
+            font-size: 14px;
+            color: #ff6b6b;
+            font-weight: 600;
+            background: rgba(255, 107, 107, 0.1);
+            padding: 5px 12px;
+            border-radius: 20px;
+        }
+
+        /* Action Button */
+        .action-button {
+            width: 100%;
+            padding: 15px;
+            background: rgba(200, 200, 200, 0.8);
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            color: #666;
+            cursor: pointer;
+            margin-bottom: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .action-button:hover {
+            background: rgba(180, 180, 180, 0.9);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .action-button.cooked {
+            background: #4caf50;
+            color: white;
+        }
+
+        .action-button.cooked:hover {
+            background: #45a049;
+        }
+
+        /* Recipe Tabs */
+        .recipe-tabs {
+            display: flex;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 15px;
+            padding: 5px;
+            margin-bottom: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 12px 20px;
+            background: none;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            color: #666;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn.active {
+            background: white;
+            color: #333;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Tab Content */
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Ingredients List */
+        .ingredients-list {
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 15px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .ingredient-item {
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            font-size: 16px;
+            color: #333;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .ingredient-item:last-child {
+            border-bottom: none;
+        }
+
+        .ingredient-item:hover {
+            background: rgba(255, 107, 107, 0.05);
+            border-radius: 8px;
+            padding-left: 10px;
+        }
+
+        .ingredient-checkbox {
+            width: 18px;
+            height: 18px;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            margin-right: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .ingredient-checkbox.checked {
+            background: #ff6b6b;
+            border-color: #ff6b6b;
+            color: white;
+        }
+
+        .ingredient-text {
+            flex: 1;
+        }
+
+        .ingredient-text.crossed {
+            text-decoration: line-through;
+            color: #999;
+        }
+
+        /* Steps List */
+        .steps-list {
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 15px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .step-item {
+            display: flex;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .step-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .step-number {
+            width: 30px;
+            height: 30px;
+            background: #ff6b6b;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            margin-right: 15px;
+            font-size: 14px;
+        }
+
+        .step-text {
+            flex: 1;
+            font-size: 16px;
+            line-height: 1.5;
+            color: #333;
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 414px;
+            background: white;
+            border-top: 1px solid #e0e0e0;
+            padding: 10px 0;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: #666;
+            font-size: 12px;
+            padding: 8px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            min-width: 60px;
+        }
+
+        .nav-item:hover,
+        .nav-item.active {
+            color: #ff6b6b;
+            background: #fff5f5;
+        }
+
+        .nav-icon {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(5px);
+            z-index: 300;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #ff6b6b;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Fade In Animation */
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        /* Responsive */
+        @media (min-width: 415px) {
+            .mobile-container {
+                border-radius: 20px;
+                margin-top: 20px;
+                min-height: calc(100vh - 40px);
+            }
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+        }
+
+        .empty-icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+
+        .empty-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .empty-message {
+            font-size: 16px;
+            line-height: 1.5;
+            margin-bottom: 30px;
+        }
+
+        .browse-btn {
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .browse-btn:hover {
+            background: #ff5252;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loading" id="loading">
+        <div class="spinner"></div>
+    </div>
+
+    <div class="mobile-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-left">
+                <button class="back-btn" onclick="goBack()">←</button>
+                <div>
+                    <div class="header-title">MOMMEAL</div>
+                    <div class="recipe-title" id="recipeTitle">Chicken Stir-Fried Vegetables</div>
+                </div>
+            </div>
+            <button class="favorite-btn" id="favoriteBtn" onclick="toggleFavorite()">♥</button>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content fade-in">
+            <!-- Recipe Image -->
+            <div class="recipe-image">
+                <div class="recipe-placeholder"></div>
+            </div>
+
+            <!-- Recipe Info -->
+            <div class="recipe-info">
+                <div class="time-difficulty">30 Min - Easy</div>
+                <div class="allergen-info">soy</div>
+            </div>
+
+            <!-- Action Button -->
+            <button class="action-button" id="cookButton" onclick="toggleCooked()">
+                MARK AS COOKED
+            </button>
+
+            <!-- Recipe Tabs -->
+            <div class="recipe-tabs">
+                <button class="tab-btn active" onclick="switchTab('ingredients')">Ingredients</button>
+                <button class="tab-btn" onclick="switchTab('steps')">Steps</button>
+            </div>
+
+            <!-- Ingredients Tab -->
+            <div class="tab-content active" id="ingredients-tab">
+                <div class="ingredients-list">
+                    <div class="ingredient-item" onclick="toggleIngredient(this)">
+                        <div class="ingredient-checkbox"></div>
+                        <div class="ingredient-text">Diced chicken breast (300g)</div>
+                    </div>
+                    <div class="ingredient-item" onclick="toggleIngredient(this)">
+                        <div class="ingredient-checkbox"></div>
+                        <div class="ingredient-text">Mixed vegetables (200g)</div>
+                    </div>
+                    <div class="ingredient-item" onclick="toggleIngredient(this)">
+                        <div class="ingredient-checkbox"></div>
+                        <div class="ingredient-text">Soy sauce (2 tbsp)</div>
+                    </div>
+                    <div class="ingredient-item" onclick="toggleIngredient(this)">
+                        <div class="ingredient-checkbox"></div>
+                        <div class="ingredient-text">Garlic (3 cloves)</div>
+                    </div>
+                    <div class="ingredient-item" onclick="toggleIngredient(this)">
+                        <div class="ingredient-checkbox"></div>
+                        <div class="ingredient-text">Vegetable oil (1 tbsp)</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Steps Tab -->
+            <div class="tab-content" id="steps-tab">
+                <div class="steps-list">
+                    <div class="step-item">
+                        <div class="step-number">1</div>
+                        <div class="step-text">Heat oil in a large pan or wok over medium-high heat.</div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-number">2</div>
+                        <div class="step-text">Add minced garlic and stir-fry for 30 seconds until fragrant.</div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-number">3</div>
+                        <div class="step-text">Add diced chicken and cook for 5-7 minutes until golden brown.</div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-number">4</div>
+                        <div class="step-text">Add mixed vegetables and stir-fry for 3-4 minutes.</div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-number">5</div>
+                        <div class="step-text">Pour soy sauce and mix well. Cook for another 2 minutes.</div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-number">6</div>
+                        <div class="step-text">Serve hot with steamed rice. Enjoy!</div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav">
+            <a href="#" class="nav-item" onclick="navigateTo('home')">
+                <div class="nav-icon">🏠</div>
+                <span>Home</span>
+            </a>
+            <a href="#" class="nav-item" onclick="navigateTo('plan')">
+                <div class="nav-icon">📅</div>
+                <span>Plan</span>
+            </a>
+            <a href="#" class="nav-item active" onclick="navigateTo('favorite')">
+                <div class="nav-icon">❤️</div>
+                <span>Favorite</span>
+            </a>
+            <a href="#" class="nav-item" onclick="navigateTo('mart')">
+                <div class="nav-icon">🛒</div>
+                <span>Mart</span>
+            </a>
+            <a href="#" class="nav-item" onclick="navigateTo('community')">
+                <div class="nav-icon">💬</div>
+                <span>Community</span>
+            </a>
+        </nav>
+    </div>
+
+    <script>
+        let isFavorited = true;
+        let isCooked = false;
+        let currentRecipe = {
+            id: 'chicken-stir-fry',
+            title: 'Chicken Stir-Fried Vegetables',
+            time: '30 Min',
+            difficulty: 'Easy',
+            allergens: ['soy']
+        };
+
+        // Check authentication
+        function checkAuth() {
+            const user = localStorage.getItem('currentUser');
+            if (!user) {
+                window.location.href = 'index.html';
+                return false;
+            }
+            return true;
+        }
+
+        // Initialize page
+        function initPage() {
+            if (!checkAuth()) return;
+            
+            loadRecipeData();
+            loadUserProgress();
+            
+            showLoading();
+            setTimeout(hideLoading, 600);
+        }
+
+        // Load recipe data
+        function loadRecipeData() {
+            // Get recipe ID from URL params or default
+            const urlParams = new URLSearchParams(window.location.search);
+            const recipeId = urlParams.get('id') || 'chicken-stir-fry';
+            
+            // Load recipe data (can be from API or localStorage)
+            loadRecipeFromStorage(recipeId);
+        }
+
+        function loadRecipeFromStorage(recipeId) {
+            // Default recipe data
+            const recipes = {
+                'chicken-stir-fry': {
+                    title: 'Chicken Stir-Fried Vegetables',
+                    time: '30 Min',
+                    difficulty: 'Easy',
+                    allergens: ['soy'],
+                    ingredients: [
+                        'Diced chicken breast (300g)',
+                        'Mixed vegetables (200g)',
+                        'Soy sauce (2 tbsp)',
+                        'Garlic (3 cloves)',
+                        'Vegetable oil (1 tbsp)'
+                    ],
+                    steps: [
+                        'Heat oil in a large pan or wok over medium-high heat.',
+                        'Add minced garlic and stir-fry for 30 seconds until fragrant.',
+                        'Add diced chicken and cook for 5-7 minutes until golden brown.',
+                        'Add mixed vegetables and stir-fry for 3-4 minutes.',
+                        'Pour soy sauce and mix well. Cook for another 2 minutes.',
+                        'Serve hot with steamed rice. Enjoy!'
+                    ]
+                }
+            };
+
+            currentRecipe = recipes[recipeId] || recipes['chicken-stir-fry'];
+            updateRecipeDisplay();
+        }
+
+        function updateRecipeDisplay() {
+            document.getElementById('recipeTitle').textContent = currentRecipe.title;
+            document.querySelector('.time-difficulty').textContent = `${currentRecipe.time} - ${currentRecipe.difficulty}`;
+            document.querySelector('.allergen-info').textContent = currentRecipe.allergens.join(', ');
+        }
+
+        // Load user progress
+        function loadUserProgress() {
+            const username = localStorage.getItem('currentUser');
+            const favorites = JSON.parse(localStorage.getItem(`favorites_${username}`) || '[]');
+            const cooked = JSON.parse(localStorage.getItem(`cooked_${username}`) || '[]');
+            
+            isFavorited = favorites.includes(currentRecipe.id);
+            isCooked = cooked.includes(currentRecipe.id);
+            
+            updateFavoriteButton();
+            updateCookButton();
+        }
+
+        // Loading functions
+        function showLoading() {
+            document.getElementById('loading').style.display = 'flex';
+        }
+
+        function hideLoading() {
+            document.getElementById('loading').style.display = 'none';
+        }
+
+        // Tab switching
+        function switchTab(tabName) {
+            // Update tab buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            // Update tab content
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.getElementById(`${tabName}-tab`).classList.add('active');
+        }
+
+        // Ingredient toggling
+        function toggleIngredient(element) {
+            const checkbox = element.querySelector('.ingredient-checkbox');
+            const text = element.querySelector('.ingredient-text');
+            
+            checkbox.classList.toggle('checked');
+            text.classList.toggle('crossed');
+            
+            if (checkbox.classList.contains('checked')) {
+                checkbox.innerHTML = '✓';
+            } else {
+                checkbox.innerHTML = '';
+            }
+        }
+
+        // Favorite functionality
+        function toggleFavorite() {
+            isFavorited = !isFavorited;
+            updateFavoriteButton();
+            saveFavoriteStatus();
+            
+            if (isFavorited) {
+                showNotification('เพิ่มในรายการโปรดแล้ว ❤️');
+            } else {
+                showNotification('ลบจากรายการโปรดแล้ว');
+                // If this page was opened from favorites, go back
+                setTimeout(() => {
+                    if (document.referrer.includes('favorite')) {
+                        goBack();
+                    }
+                }, 1500);
+            }
+        }
+
+        function updateFavoriteButton() {
+            const btn = document.getElementById('favoriteBtn');
+            if (isFavorited) {
+                btn.classList.remove('inactive');
+                btn.style.color = '#ff6b6b';
+            } else {
+                btn.classList.add('inactive');
+                btn.style.color = '#ccc';
+            }
+        }
+
+        function saveFavoriteStatus() {
+            const username = localStorage.getItem('currentUser');
+            let favorites = JSON.parse(localStorage.getItem(`favorites_${username}`) || '[]');
+            
+            if (isFavorited) {
+                if (!favorites.includes(currentRecipe.id)) {
+                    favorites.push(currentRecipe.id);
+                }
+            } else {
+                favorites = favorites.filter(id => id !== currentRecipe.id);
+            }
+            
+            localStorage.setItem(`favorites_${username}`, JSON.stringify(favorites));
+        }
+
+        // Cooked functionality
+        function toggleCooked() {
+            isCooked = !isCooked;
+            updateCookButton();
+            saveCookedStatus();
+            
+            if (isCooked) {
+                showNotification('ทำอาหารเสร็จแล้ว! 👨‍🍳');
+            } else {
+                showNotification('ยกเลิกการทำอาหาร');
+            }
+        }
+
+        function updateCookButton() {
+            const btn = document.getElementById('cookButton');
+            if (isCooked) {
+                btn.textContent = 'COOKED ✓';
+                btn.classList.add('cooked');
+            } else {
+                btn.textContent = 'MARK AS COOKED';
+                btn.classList.remove('cooked');
+            }
+        }
+
+        function saveCookedStatus() {
+            const username = localStorage.getItem('currentUser');
+            let cooked = JSON.parse(localStorage.getItem(`cooked_${username}`) || '[]');
+            
+            if (isCooked) {
+                if (!cooked.includes(currentRecipe.id)) {
+                    cooked.push(currentRecipe.id);
+                }
+            } else {
+                cooked = cooked.filter(id => id !== currentRecipe.id);
+            }
+            
+            localStorage.setItem(`cooked_${username}`, JSON.stringify(cooked));
+        }
+
+        // Navigation
+        function goBack() {
+            showLoading();
+            setTimeout(() => {
+                // Check if came from a specific page
+                const referrer = document.referrer;
+                if (referrer.includes('home.html')) {
+                    window.location.href = 'home.html';
+                } else if (referrer.includes('plan.html')) {
+                    window.location.href = 'plan.html';
+                } else {
+                    window.location.href = 'home.html'; // Default
+                }
+            }, 300);
+        }
+
+        function navigateTo(page) {
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            event.target.closest('.nav-item').classList.add('active');
+            
+            showLoading();
+            setTimeout(() => {
+                hideLoading();
+                
+                switch(page) {
+                    case 'home':
+                        window.location.href = 'home.html';
+                        break;
+                    case 'plan':
+                        window.location.href = 'plan.html';
+                        break;
+                    case 'favorite':
+                        window.location.href = 'favorite.html';
+                        // Already on favorite page
+                        break;
+                    case 'mart':
+                        window.location.href = 'mart.html';
+                        //showNotification('🛒 หน้าตลาดออนไลน์ - กำลังพัฒนา');
+                        break;
+                    case 'community':
+                        window.location.href = 'community.html';
+                        //showNotification('💬 หน้าชุมชน - กำลังพัฒนา');
+                        break;
+                }
+            }, 500);
+        }
+
+        // Notification function
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 70px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
+                color: white;
+                padding: 12px 20px;
+                border-radius: 25px;
+                font-size: 14px;
+                font-weight: 500;
+                z-index: 1000;
+                box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+                animation: slideDown 0.3s ease;
+                max-width: 300px;
+                text-align: center;
+            `;
+            
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideUp 0.3s ease forwards';
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 300);
+            }, 2500);
+        }
+
+        // Add CSS animations for notifications
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideDown {
+                from { transform: translateX(-50%) translateY(-100%); opacity: 0; }
+                to { transform: translateX(-50%) translateY(0); opacity: 1; }
+            }
+            @keyframes slideUp {
+                from { transform: translateX(-50%) translateY(0); opacity: 1; }
+                to { transform: translateX(-50%) translateY(-100%); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Initialize page when loaded
+        document.addEventListener('DOMContentLoaded', initPage);
+
+        // Handle URL parameters for different recipes
+        function handleRecipeParams() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const recipeId = urlParams.get('id');
+            
+            if (recipeId) {
+                currentRecipe.id = recipeId;
+                loadRecipeFromStorage(recipeId);
+            }
+        }
+
+        // Share recipe functionality
+        function shareRecipe() {
+            const shareData = {
+                title: currentRecipe.title,
+                text: `ลองทำ ${currentRecipe.title} กันเถอะ! ${currentRecipe.time} - ${currentRecipe.difficulty}`,
+                url: window.location.href
+            };
+
+            if (navigator.share) {
+                navigator.share(shareData);
+            } else {
+                // Fallback for browsers that don't support Web Share API
+                const shareText = `${shareData.title}\n${shareData.text}\n${shareData.url}`;
+                navigator.clipboard.writeText(shareText).then(() => {
+                    showNotification('คัดลอกลิงก์แล้ว!');
+                });
+            }
+        }
+
+        // Add recipe to shopping list
+        function addToShoppingList() {
+            const username = localStorage.getItem('currentUser');
+            let shoppingList = JSON.parse(localStorage.getItem(`shoppingList_${username}`) || '[]');
+            
+            // Add unchecked ingredients to shopping list
+            const ingredientElements = document.querySelectorAll('.ingredient-item');
+            let addedCount = 0;
+            
+            ingredientElements.forEach(element => {
+                const checkbox = element.querySelector('.ingredient-checkbox');
+                const text = element.querySelector('.ingredient-text').textContent;
+                
+                if (!checkbox.classList.contains('checked')) {
+                    if (!shoppingList.some(item => item.name === text)) {
+                        shoppingList.push({
+                            name: text,
+                            recipe: currentRecipe.title,
+                            dateAdded: new Date().toISOString()
+                        });
+                        addedCount++;
+                    }
+                }
+            });
+            
+            if (addedCount > 0) {
+                localStorage.setItem(`shoppingList_${username}`, JSON.stringify(shoppingList));
+                showNotification(`เพิ่ม ${addedCount} รายการในรายการซื้อแล้ว 🛒`);
+            } else {
+                showNotification('ส่วนผสมทั้งหมดมีครบแล้ว ✓');
+            }
+        }
+
+        // Timer functionality for cooking steps
+        let stepTimers = {};
+
+        function startStepTimer(stepNumber, minutes) {
+            if (stepTimers[stepNumber]) {
+                clearInterval(stepTimers[stepNumber]);
+            }
+            
+            let timeLeft = minutes * 60; // Convert to seconds
+            const stepElement = document.querySelector(`.step-item:nth-child(${stepNumber}) .step-text`);
+            const originalText = stepElement.textContent;
+            
+            stepTimers[stepNumber] = setInterval(() => {
+                timeLeft--;
+                const minutesLeft = Math.floor(timeLeft / 60);
+                const secondsLeft = timeLeft % 60;
+                
+                if (timeLeft > 0) {
+                    stepElement.textContent = `${originalText} (${minutesLeft}:${secondsLeft.toString().padStart(2, '0')})`;
+                } else {
+                    stepElement.textContent = originalText;
+                    clearInterval(stepTimers[stepNumber]);
+                    showNotification(`ขั้นตอนที่ ${stepNumber} เสร็จแล้ว! ⏰`);
+                }
+            }, 1000);
+            
+            showNotification(`เริ่มตั้งเวลา ${minutes} นาที สำหรับขั้นตอนที่ ${stepNumber}`);
+        }
+
+        // Double tap on step to start timer
+        let lastTap = 0;
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.step-item').forEach((step, index) => {
+                step.addEventListener('click', function(e) {
+                    const currentTime = new Date().getTime();
+                    const tapLength = currentTime - lastTap;
+                    
+                    if (tapLength < 500 && tapLength > 0) {
+                        // Double tap detected
+                        const stepNumber = index + 1;
+                        const minutes = prompt(`ตั้งเวลาสำหรับขั้นตอนที่ ${stepNumber} (นาที):`);
+                        if (minutes && !isNaN(minutes) && minutes > 0) {
+                            startStepTimer(stepNumber, parseInt(minutes));
+                        }
+                    }
+                    lastTap = currentTime;
+                });
+            });
+        });
+
+        // Nutrition information
+        function showNutritionInfo() {
+            const nutritionData = {
+                calories: '320',
+                protein: '28g',
+                carbs: '12g',
+                fat: '18g',
+                fiber: '4g',
+                sodium: '680mg'
+            };
+            
+            let nutritionHTML = '<div style="text-align: left;">';
+            nutritionHTML += '<h3 style="margin-bottom: 15px; color: #ff6b6b;">ข้อมูลโภชนาการ (ต่อหนึ่งเสิร์ฟ)</h3>';
+            Object.entries(nutritionData).forEach(([key, value]) => {
+                const labels = {
+                    calories: 'แคลอรี่',
+                    protein: 'โปรตีน',
+                    carbs: 'คาร์โบไฮเดรต',
+                    fat: 'ไขมัน',
+                    fiber: 'ใยอาหาร',
+                    sodium: 'โซเดียม'
+                };
+                nutritionHTML += `<div style="display: flex; justify-content: space-between; margin-bottom: 8px;">`;
+                nutritionHTML += `<span>${labels[key]}:</span><span style="font-weight: 600;">${value}</span></div>`;
+            });
+            nutritionHTML += '</div>';
+            
+            // Create modal for nutrition info
+            const modal = document.createElement('div');
+            modal.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 1000;
+            `;
+            
+            const modalContent = document.createElement('div');
+            modalContent.style.cssText = `
+                background: white;
+                padding: 30px;
+                border-radius: 15px;
+                max-width: 300px;
+                width: 90%;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            `;
+            
+            modalContent.innerHTML = nutritionHTML + 
+                '<button style="width: 100%; margin-top: 20px; padding: 10px; background: #ff6b6b; color: white; border: none; border-radius: 8px; cursor: pointer;" onclick="this.closest(\'.modal\').remove()">ปิด</button>';
+            
+            modal.className = 'modal';
+            modal.appendChild(modalContent);
+            document.body.appendChild(modal);
+            
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    modal.remove();
+                }
+            });
+        }
+
+        // Add floating action button for additional features
+        function createFloatingMenu() {
+            const fab = document.createElement('div');
+            fab.style.cssText = `
+                position: fixed;
+                bottom: 100px;
+                right: 20px;
+                width: 56px;
+                height: 56px;
+                background: #ff6b6b;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+                cursor: pointer;
+                z-index: 200;
+                transition: all 0.3s ease;
+                color: white;
+                font-size: 24px;
+            `;
+            fab.innerHTML = '⋯';
+            fab.title = 'เมนูเพิ่มเติม';
+            
+            fab.addEventListener('click', function() {
+                showActionMenu();
+            });
+            
+            fab.addEventListener('mouseover', function() {
+                this.style.transform = 'scale(1.1)';
+                this.style.boxShadow = '0 6px 20px rgba(255, 107, 107, 0.4)';
+            });
+            
+            fab.addEventListener('mouseout', function() {
+                this.style.transform = 'scale(1)';
+                this.style.boxShadow = '0 4px 15px rgba(255, 107, 107, 0.3)';
+            });
+            
+            document.body.appendChild(fab);
+        }
+
+        function showActionMenu() {
+            const actions = [
+                { text: '🛒 เพิ่มในรายการซื้อ', action: addToShoppingList },
+                { text: '📊 ข้อมูลโภชนาการ', action: showNutritionInfo },
+                { text: '📤 แชร์สูตรอาหาร', action: shareRecipe }
+            ];
+            
+            const menu = document.createElement('div');
+            menu.style.cssText = `
+                position: fixed;
+                bottom: 170px;
+                right: 20px;
+                background: white;
+                border-radius: 10px;
+                box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+                z-index: 300;
+                overflow: hidden;
+                min-width: 200px;
+            `;
+            
+            actions.forEach(action => {
+                const item = document.createElement('div');
+                item.style.cssText = `
+                    padding: 15px 20px;
+                    cursor: pointer;
+                    border-bottom: 1px solid #f0f0f0;
+                    transition: background 0.3s ease;
+                `;
+                item.textContent = action.text;
+                
+                item.addEventListener('click', function() {
+                    action.action();
+                    menu.remove();
+                });
+                
+                item.addEventListener('mouseover', function() {
+                    this.style.background = '#f8f9fa';
+                });
+                
+                item.addEventListener('mouseout', function() {
+                    this.style.background = 'white';
+                });
+                
+                menu.appendChild(item);
+            });
+            
+            // Remove last border
+            menu.lastChild.style.borderBottom = 'none';
+            
+            document.body.appendChild(menu);
+            
+            // Close menu when clicking outside
+            setTimeout(() => {
+                document.addEventListener('click', function closeMenu(e) {
+                    if (!menu.contains(e.target)) {
+                        menu.remove();
+                        document.removeEventListener('click', closeMenu);
+                    }
+                });
+            }, 100);
+        }
+
+        // Initialize additional features
+        setTimeout(() => {
+            createFloatingMenu();
+            handleRecipeParams();
+        }, 1000);
+
+        console.log('❤️ Favorite Recipe Page - Loaded successfully!');
+    </script>
+</body>
+</html>

@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>วางแผนอาหาร - Mommeal</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #f8f9fa;
+            color: #333;
+            line-height: 1.5;
+        }
+
+        /* Mobile Container */
+        .mobile-container {
+            max-width: 414px;
+            margin: 0 auto;
+            background: #f5f3f0;
+            min-height: 100vh;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(245, 243, 240, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .back-btn {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            padding: 8px;
+            margin-right: 15px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        .header-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #666;
+            letter-spacing: 1px;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 20px;
+            padding-bottom: 100px;
+        }
+
+        /* Week Calendar */
+        .week-calendar {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 30px;
+            padding: 10px 0;
+        }
+
+        .day-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            padding: 10px 8px;
+            border-radius: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .day-item:hover {
+            background: rgba(255, 107, 107, 0.1);
+        }
+
+        .day-label {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .day-circle {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .day-circle.default {
+            background: rgba(200, 200, 200, 0.3);
+            color: #666;
+        }
+
+        .day-circle.active {
+            background: #ff6b6b;
+            color: white;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+            transform: scale(1.1);
+        }
+
+        /* User Selection */
+        .user-selection {
+            background: rgba(255, 255, 255, 0.7);
+            padding: 15px 20px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .user-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .dropdown-btn {
+            background: none;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            color: #666;
+            padding: 5px;
+        }
+
+        .add-user-btn {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: #ff6b6b;
+            padding: 5px;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .add-user-btn:hover {
+            background: rgba(255, 107, 107, 0.1);
+            transform: scale(1.1);
+        }
+
+        /* Meal Sections */
+        .meal-section {
+            background: rgba(255, 255, 255, 0.7);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .meal-section:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .meal-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .meal-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .meal-placeholder {
+            flex: 1;
+            height: 60px;
+            background: rgba(240, 240, 240, 0.5);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            font-style: italic;
+            margin-right: 15px;
+        }
+
+        .detail-btn {
+            background: rgba(200, 150, 100, 0.8);
+            border: none;
+            padding: 12px 20px;
+            border-radius: 20px;
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px rgba(200, 150, 100, 0.3);
+        }
+
+        .detail-btn:hover {
+            background: rgba(200, 150, 100, 1);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(200, 150, 100, 0.4);
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 15px 20px;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .generate-btn {
+            background: #666;
+            color: white;
+        }
+
+        .generate-btn:hover {
+            background: #555;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .share-btn {
+            background: #ff6b6b;
+            color: white;
+        }
+
+        .share-btn:hover {
+            background: #ff5252;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.3);
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 414px;
+            background: white;
+            border-top: 1px solid #e0e0e0;
+            padding: 10px 0;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: #666;
+            font-size: 12px;
+            padding: 8px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            min-width: 60px;
+        }
+
+        .nav-item:hover,
+        .nav-item.active {
+            color: #ff6b6b;
+            background: #fff5f5;
+        }
+
+        .nav-icon {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(5px);
+            z-index: 300;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #ff6b6b;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Dropdown Menu */
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+            z-index: 200;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+        }
+
+        .dropdown-menu.open {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-item {
+            padding: 12px 20px;
+            cursor: pointer;
+            border-bottom: 1px solid #f0f0f0;
+            transition: background 0.3s ease;
+        }
+
+        .dropdown-item:hover {
+            background: #f8f9fa;
+        }
+
+        .dropdown-item:last-child {
+            border-bottom: none;
+        }
+
+        /* Fade In Animation */
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive */
+        @media (min-width: 415px) {
+            .mobile-container {
+                border-radius: 20px;
+                margin-top: 20px;
+                min-height: calc(100vh - 40px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loading" id="loading">
+        <div class="spinner"></div>
+    </div>
+
+    <div class="mobile-container">
+        <!-- Header -->
+        <header class="header">
+            <button class="back-btn" onclick="goBack()">←</button>
+            <div class="header-title">MOMMEAL</div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content fade-in">
+            <!-- Week Calendar -->
+            <div class="week-calendar">
+                <div class="day-item" onclick="selectDay('mon')">
+                    <div class="day-label">Mon</div>
+                    <div class="day-circle active" id="day-mon">M</div>
+                </div>
+                <div class="day-item" onclick="selectDay('tue')">
+                    <div class="day-label">Tue</div>
+                    <div class="day-circle default" id="day-tue">•</div>
+                </div>
+                <div class="day-item" onclick="selectDay('wed')">
+                    <div class="day-label">Wed</div>
+                    <div class="day-circle default" id="day-wed">•</div>
+                </div>
+                <div class="day-item" onclick="selectDay('thu')">
+                    <div class="day-label">Thu</div>
+                    <div class="day-circle default" id="day-thu">•</div>
+                </div>
+                <div class="day-item" onclick="selectDay('fri')">
+                    <div class="day-label">Fri</div>
+                    <div class="day-circle default" id="day-fri">•</div>
+                </div>
+                <div class="day-item" onclick="selectDay('sat')">
+                    <div class="day-label">Sat</div>
+                    <div class="day-circle default" id="day-sat">•</div>
+                </div>
+                <div class="day-item" onclick="selectDay('sun')">
+                    <div class="day-label">Sun</div>
+                    <div class="day-circle default" id="day-sun">•</div>
+                </div>
+            </div>
+
+            <!-- User Selection -->
+            <div class="user-selection">
+                <div style="display: flex; align-items: center; position: relative;">
+                    <span class="user-name" id="currentUser">Amma</span>
+                    <button class="dropdown-btn" onclick="toggleUserDropdown()">▼</button>
+                    
+                    <!-- Dropdown Menu -->
+                    <div class="dropdown-menu" id="userDropdown">
+                        <div class="dropdown-item" onclick="selectUser('Amma')">Amma</div>
+                        <div class="dropdown-item" onclick="selectUser('Papa')">Papa</div>
+                        <div class="dropdown-item" onclick="selectUser('Baby')">Baby</div>
+                        <div class="dropdown-item" onclick="addNewUser()">+ เพิ่มสมาชิก</div>
+                    </div>
+                </div>
+                <button class="add-user-btn" onclick="addNewUser()">+</button>
+            </div>
+
+            <!-- Meal Sections -->
+            <div class="meal-section" onclick="editMeal('breakfast')">
+                <div class="meal-title">Breakfast</div>
+                <div class="meal-content">
+                    <div class="meal-placeholder" id="breakfast-content">
+                        คลิกเพื่อเพิ่มอาหารเช้า
+                    </div>
+                    <button class="detail-btn" onclick="event.stopPropagation(); showMealDetail('breakfast')">Detail</button>
+                </div>
+            </div>
+
+            <div class="meal-section" onclick="editMeal('lunch')">
+                <div class="meal-title">Lunch</div>
+                <div class="meal-content">
+                    <div class="meal-placeholder" id="lunch-content">
+                        คลิกเพื่อเพิ่มอาหารกลางวัน
+                    </div>
+                    <button class="detail-btn" onclick="event.stopPropagation(); showMealDetail('lunch')">Detail</button>
+                </div>
+            </div>
+
+            <div class="meal-section" onclick="editMeal('dinner')">
+                <div class="meal-title">Dinner</div>
+                <div class="meal-content">
+                    <div class="meal-placeholder" id="dinner-content">
+                        คลิกเพื่อเพิ่มอาหารเย็น
+                    </div>
+                    <button class="detail-btn" onclick="event.stopPropagation(); showMealDetail('dinner')">Detail</button>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <button class="action-btn generate-btn" onclick="generatePlan()">Generate Plan</button>
+                <button class="action-btn share-btn" onclick="sharePlan()">Share Plan</button>
+            </div>
+        </main>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav">
+            <a href="#" class="nav-item" onclick="navigateTo('home')">
+                <div class="nav-icon">🏠</div>
+                <span>Home</span>
+            </a>
+            <a href="#" class="nav-item active" onclick="navigateTo('plan')">
+                <div class="nav-icon">📅</div>
+                <span>Plan</span>
+            </a>
+            <a href="#" class="nav-item" onclick="navigateTo('favorite')">
+                <div class="nav-icon">❤️</div>
+                <span>Favorite</span>
+            </a>
+            <a href="#" class="nav-item" onclick="navigateTo('mart')">
+                <div class="nav-icon">🛒</div>
+                <span>Mart</span>
+            </a>
+            <a href="#" class="nav-item" onclick="navigateTo('community')">
+                <div class="nav-icon">💬</div>
+                <span>Community</span>
+            </a>
+        </nav>
+    </div>
+
+    <script>
+        let currentDay = 'mon';
+        let currentUser = 'Amma';
+        let mealPlans = {};
+
+        // Check authentication
+        function checkAuth() {
+            const user = localStorage.getItem('currentUser');
+            if (!user) {
+                window.location.href = 'index.html';
+                return false;
+            }
+            return true;
+        }
+
+        // Initialize page
+        function initPage() {
+            if (!checkAuth()) return;
+            
+            loadMealPlans();
+            updateCurrentUser();
+            
+            showLoading();
+            setTimeout(hideLoading, 600);
+        }
+
+        // Loading functions
+        function showLoading() {
+            document.getElementById('loading').style.display = 'flex';
+        }
+
+        function hideLoading() {
+            document.getElementById('loading').style.display = 'none';
+        }
+
+        // Update current user display
+        function updateCurrentUser() {
+            const username = localStorage.getItem('currentUser');
+            if (username) {
+                currentUser = username;
+                document.getElementById('currentUser').textContent = username;
+            }
+        }
+
+        // Day selection
+        function selectDay(day) {
+            // Remove active from all days
+            document.querySelectorAll('.day-circle').forEach(circle => {
+                circle.classList.remove('active');
+                circle.classList.add('default');
+                if (circle.id !== 'day-mon') {
+                    circle.textContent = '•';
+                }
+            });
+            
+            // Add active to selected day
+            const selectedCircle = document.getElementById(`day-${day}`);
+            selectedCircle.classList.remove('default');
+            selectedCircle.classList.add('active');
+            
+            // Set day letter
+            const dayLetters = {
+                'mon': 'M', 'tue': 'T', 'wed': 'W', 'thu': 'T',
+                'fri': 'F', 'sat': 'S', 'sun': 'S'
+            };
+            selectedCircle.textContent = dayLetters[day];
+            
+            currentDay = day;
+            loadDayMeals();
+        }
+
+        // User dropdown
+        function toggleUserDropdown() {
+            const dropdown = document.getElementById('userDropdown');
+            dropdown.classList.toggle('open');
+            
+            // Close when clicking outside
+            setTimeout(() => {
+                document.addEventListener('click', function closeDropdown(e) {
+                    if (!e.target.closest('.user-selection')) {
+                        dropdown.classList.remove('open');
+                        document.removeEventListener('click', closeDropdown);
+                    }
+                });
+            }, 100);
+        }
+
+        function selectUser(user) {
+            currentUser = user;
+            document.getElementById('currentUser').textContent = user;
+            document.getElementById('userDropdown').classList.remove('open');
+            loadDayMeals();
+        }
+
+        function addNewUser() {
+            const newUser = prompt('ชื่อสมาชิกใหม่:');
+            if (newUser && newUser.trim()) {
+                selectUser(newUser.trim());
+                showNotification(`เพิ่มสมาชิก ${newUser.trim()} เรียบร้อยแล้ว`);
+            }
+        }
+
+        // Meal management
+        function editMeal(mealType) {
+            const mealNames = {
+                'breakfast': 'อาหารเช้า',
+                'lunch': 'อาหารกลางวัน', 
+                'dinner': 'อาหารเย็น'
+            };
+            
+            const food = prompt(`เพิ่ม${mealNames[mealType]} สำหรับ ${currentUser}:`);
+            if (food && food.trim()) {
+                saveMeal(mealType, food.trim());
+                updateMealDisplay(mealType, food.trim());
+                showNotification(`เพิ่ม${mealNames[mealType]}เรียบร้อยแล้ว`);
+            }
+        }
+
+        function saveMeal(mealType, food) {
+            if (!mealPlans[currentUser]) {
+                mealPlans[currentUser] = {};
+            }
+            if (!mealPlans[currentUser][currentDay]) {
+                mealPlans[currentUser][currentDay] = {};
+            }
+            
+            mealPlans[currentUser][currentDay][mealType] = food;
+            localStorage.setItem('mealPlans', JSON.stringify(mealPlans));
+        }
+
+        function updateMealDisplay(mealType, food) {
+            const contentEl = document.getElementById(`${mealType}-content`);
+            contentEl.textContent = food;
+            contentEl.style.fontStyle = 'normal';
+            contentEl.style.color = '#333';
+        }
+
+        function loadDayMeals() {
+            const meals = ['breakfast', 'lunch', 'dinner'];
+            const mealNames = {
+                'breakfast': 'คลิกเพื่อเพิ่มอาหารเช้า',
+                'lunch': 'คลิกเพื่อเพิ่มอาหารกลางวัน',
+                'dinner': 'คลิกเพื่อเพิ่มอาหารเย็น'
+            };
+            
+            meals.forEach(meal => {
+                const contentEl = document.getElementById(`${meal}-content`);
+                const savedMeal = mealPlans[currentUser]?.[currentDay]?.[meal];
+                
+                if (savedMeal) {
+                    contentEl.textContent = savedMeal;
+                    contentEl.style.fontStyle = 'normal';
+                    contentEl.style.color = '#333';
+                } else {
+                    contentEl.textContent = mealNames[meal];
+                    contentEl.style.fontStyle = 'italic';
+                    contentEl.style.color = '#999';
+                }
+            });
+        }
+
+        function loadMealPlans() {
+            const saved = localStorage.getItem('mealPlans');
+            if (saved) {
+                mealPlans = JSON.parse(saved);
+            }
+            loadDayMeals();
+        }
+
+        function showMealDetail(mealType) {
+            const meal = mealPlans[currentUser]?.[currentDay]?.[mealType];
+            if (meal) {
+                showNotification(`รายละเอียด: ${meal}`);
+            } else {
+                showNotification('ยังไม่มีอาหารในมื้อนี้');
+            }
+        }
+
+        // Action functions
+        function generatePlan() {
+            showLoading();
+            
+            setTimeout(() => {
+                hideLoading();
+                
+                // Generate sample meals
+                const sampleMeals = {
+                    breakfast: ['โจ๊กไก่', 'ขนมปังปิ้ง', 'ข้าวต้มปลา', 'ไข่เจียว'],
+                    lunch: ['ข้าวผัดกุ้ง', 'ส้มตำ', 'แกงเขียวหวาน', 'ลาบหมู'],
+                    dinner: ['สเต็กปลา', 'ผัดผักรวม', 'ซุปมิโซะ', 'ข้าวโพดผัดเนย']
+                };
+                
+                Object.keys(sampleMeals).forEach(mealType => {
+                    const randomMeal = sampleMeals[mealType][Math.floor(Math.random() * sampleMeals[mealType].length)];
+                    saveMeal(mealType, randomMeal);
+                    updateMealDisplay(mealType, randomMeal);
+                });
+                
+                showNotification('สร้างแผนอาหารแล้ว! 🍽️');
+            }, 1500);
+        }
+
+        function sharePlan() {
+            const dayMeals = mealPlans[currentUser]?.[currentDay];
+            if (!dayMeals || Object.keys(dayMeals).length === 0) {
+                showNotification('ยังไม่มีแผนอาหารให้แชร์');
+                return;
+            }
+            
+            let shareText = `📅 แผนอาหาร ${currentUser} วัน${currentDay.toUpperCase()}\n`;
+            if (dayMeals.breakfast) shareText += `🌅 เช้า: ${dayMeals.breakfast}\n`;
+            if (dayMeals.lunch) shareText += `🌞 กลางวัน: ${dayMeals.lunch}\n`;
+            if (dayMeals.dinner) shareText += `🌙 เย็น: ${dayMeals.dinner}\n`;
+            shareText += '\n#Mommeal';
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: 'แผนอาหาร Mommeal',
+                    text: shareText
+                });
+            } else {
+                navigator.clipboard.writeText(shareText).then(() => {
+                    showNotification('คัดลอกแผนอาหารแล้ว!');
+                });
+            }
+        }
+
+        // Navigation
+        function goBack() {
+            showLoading();
+            setTimeout(() => {
+                window.location.href = 'home.html';
+            }, 300);
+        }
+
+        function navigateTo(page) {
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            event.target.closest('.nav-item').classList.add('active');
+            
+            showLoading();
+            setTimeout(() => {
+                hideLoading();
+                
+                switch(page) {
+                    case 'home':
+                        window.location.href = 'home.html';
+                        break;
+                    case 'plan':
+                        // Already on plan page
+                        break;
+                    case 'favorite':
+                        window.location.href = 'favorite.html';
+                        //showNotification('❤️ หน้ารายการโปรด - กำลังพัฒนา');
+                        break;
+                    case 'mart':
+                        window.location.href = 'mart.html';
+                        //showNotification('🛒 หน้าตลาดออนไลน์ - กำลังพัฒนา');
+                        break;
+                    case 'community':
+                        window.location.href = 'community.html';
+                        //showNotification('💬 หน้าชุมชน - กำลังพัฒนา');
+                        break;
+                }
+            }, 500);
+        }
+
+        // Notification function
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 70px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
+                color: white;
+                padding: 12px 20px;
+                border-radius: 25px;
+                font-size: 14px;
+                font-weight: 500;
+                z-index: 1000;
+                box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+                animation: slideDown 0.3s ease;
+                max-width: 300px;
+                text-align: center;
+            `;
+            
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideUp 0.3s ease forwards';
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 300);
+            }, 2500);
+        }
+
+        // Add CSS animations for notifications
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideDown {
+                from { transform: translateX(-50%) translateY(-100%); opacity: 0; }
+                to { transform: translateX(-50%) translateY(0); opacity: 1; }
+            }
+            @keyframes slideUp {
+                from { transform: translateX(-50%) translateY(0); opacity: 1; }
+                to { transform: translateX(-50%) translateY(-100%); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Initialize page when loaded
+        document.addEventListener('DOMContentLoaded', initPage);
+
+        console.log('📅 Plan Page - Loaded successfully!');
+    </script>
+</body>
+</html>
