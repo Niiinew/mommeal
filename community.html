@@ -1,0 +1,1323 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ชุมชน - Mommeal</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #f8f9fa;
+            color: #333;
+            line-height: 1.5;
+        }
+
+        /* Mobile Container */
+        .mobile-container {
+            max-width: 414px;
+            margin: 0 auto;
+            background: #f5f3f0;
+            min-height: 100vh;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(245, 243, 240, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 15px 20px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+        }
+
+        .back-btn {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            padding: 8px;
+            margin-right: 15px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        .header-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #666;
+            letter-spacing: 1px;
+        }
+
+        .menu-btn {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            color: #666;
+        }
+
+        .menu-btn:hover {
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        .page-subtitle {
+            font-size: 16px;
+            color: #333;
+            font-weight: 600;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 20px;
+            padding-bottom: 100px;
+        }
+
+        /* Post Card */
+        .post-card {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .post-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Post Header */
+        .post-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #ccc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            font-size: 24px;
+            color: #666;
+            overflow: hidden;
+        }
+
+        .user-info {
+            flex: 1;
+        }
+
+        .username {
+            font-weight: 600;
+            color: #333;
+            font-size: 16px;
+            margin-bottom: 3px;
+        }
+
+        .post-time {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .post-menu {
+            background: none;
+            border: none;
+            font-size: 16px;
+            color: #666;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .post-menu:hover {
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        /* Post Content */
+        .post-content {
+            margin-bottom: 15px;
+        }
+
+        .post-text {
+            font-size: 16px;
+            line-height: 1.5;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .post-image {
+            width: 100%;
+            height: 200px;
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            margin-bottom: 15px;
+        }
+
+        .post-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .post-placeholder {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 200"><defs><linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:%23ffecd2;stop-opacity:1" /><stop offset="100%" style="stop-color:%23fcb69f;stop-opacity:1" /></linearGradient></defs><rect width="400" height="200" fill="url(%23grad)"/><g transform="translate(200,100)"><circle cx="-80" cy="-30" r="40" fill="%23ff8a65" opacity="0.7"/><circle cx="60" cy="-20" r="35" fill="%23ffb74d" opacity="0.8"/><circle cx="-20" cy="40" r="45" fill="%23ffa726" opacity="0.6"/><rect x="-100" y="60" width="200" height="40" rx="20" fill="%23fff3e0" opacity="0.8"/><text x="0" y="10" text-anchor="middle" fill="%23bf360c" font-family="Arial" font-size="36" opacity="0.9">👨‍👩‍👧‍👦🍳</text></g></svg>') center/cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+        }
+
+        /* Post Actions */
+        .post-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .action-group {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .action-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            color: #666;
+            transition: all 0.3s ease;
+            padding: 8px 12px;
+            border-radius: 20px;
+        }
+
+        .action-btn:hover {
+            background: rgba(255, 107, 107, 0.1);
+            color: #ff6b6b;
+        }
+
+        .action-btn.liked {
+            color: #ff6b6b;
+        }
+
+        .action-btn.liked .heart {
+            color: #ff6b6b;
+        }
+
+        .heart {
+            font-size: 18px;
+            transition: all 0.3s ease;
+        }
+
+        .comment-icon {
+            font-size: 16px;
+        }
+
+        .view-btn {
+            background: linear-gradient(135deg, #ff8a65, #ffb74d);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px rgba(255, 138, 101, 0.3);
+        }
+
+        .view-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(255, 138, 101, 0.4);
+        }
+
+        /* Floating Action Button */
+        .fab {
+            position: fixed;
+            bottom: 100px;
+            right: 20px;
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+            transition: all 0.3s ease;
+            z-index: 200;
+        }
+
+        .fab:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 414px;
+            background: white;
+            border-top: 1px solid #e0e0e0;
+            padding: 10px 0;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: #666;
+            font-size: 12px;
+            padding: 8px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            min-width: 60px;
+        }
+
+        .nav-item:hover,
+        .nav-item.active {
+            color: #ff6b6b;
+            background: #fff5f5;
+        }
+
+        .nav-icon {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(5px);
+            z-index: 300;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #ff6b6b;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Fade In Animation */
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Modal Styles */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modal.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 350px;
+            width: 90%;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transform: scale(0.8);
+            transition: transform 0.3s ease;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal.show .modal-content {
+            transform: scale(1);
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+        }
+
+        .empty-icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+
+        .empty-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .empty-message {
+            font-size: 16px;
+            line-height: 1.5;
+            margin-bottom: 30px;
+        }
+
+        /* Create Post Form */
+        .create-post-form {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #f0f0f0;
+            border-radius: 10px;
+            font-size: 16px;
+            font-family: inherit;
+            resize: vertical;
+            min-height: 80px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #ff6b6b;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: #ff6b6b;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #ff5252;
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #666;
+        }
+
+        .btn-secondary:hover {
+            background: #e0e0e0;
+        }
+
+        /* Responsive */
+        @media (min-width: 415px) {
+            .mobile-container {
+                border-radius: 20px;
+                margin-top: 20px;
+                min-height: calc(100vh - 40px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loading" id="loading">
+        <div class="spinner"></div>
+    </div>
+
+    <div class="mobile-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-top">
+                <div class="header-left">
+                    <button class="back-btn" onclick="goBack()">←</button>
+                    <div class="header-title">MOMMEAL</div>
+                </div>
+                <button class="menu-btn" onclick="showMenu()">⋯</button>
+            </div>
+            <div class="page-subtitle">Community</div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content fade-in">
+            <!-- Posts Container -->
+            <div id="postsContainer">
+                <!-- Sample Post -->
+                <div class="post-card">
+                    <div class="post-header">
+                        <div class="user-avatar">👩‍🍳</div>
+                        <div class="user-info">
+                            <div class="username" id="postUsername">คุณแม่น้อย</div>
+                            <div class="post-time">2 ชั่วโมงที่แล้ว</div>
+                        </div>
+                        <button class="post-menu" onclick="showPostMenu()">⋯</button>
+                    </div>
+                    
+                    <div class="post-content">
+                        <div class="post-text">
+                            วันนี้ทำอาหารกับลูกๆ สนุกมากเลย! ลูกช่วยคลุกสลัด ช่วยล้างผัก ได้เรียนรู้เรื่องโภชนาการไปด้วย 🥗👨‍👩‍👧‍👦
+                        </div>
+                        <div class="post-image">
+                            <div class="post-placeholder"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="post-actions">
+                        <div class="action-group">
+                            <button class="action-btn" onclick="toggleLike(this)" data-likes="1200">
+                                <span class="heart">♡</span>
+                                <span class="like-count">1.2k</span>
+                            </button>
+                            <button class="action-btn" onclick="showComments()">
+                                <span class="comment-icon">💬</span>
+                                <span>89</span>
+                            </button>
+                        </div>
+                        <button class="view-btn" onclick="viewPost()">View</button>
+                    </div>
+                </div>
+
+                <!-- More posts will be loaded here -->
+            </div>
+
+            <!-- Empty State (hidden by default) -->
+            <div class="empty-state" id="emptyState" style="display: none;">
+                <div class="empty-icon">💭</div>
+                <div class="empty-title">ยังไม่มีโพสต์</div>
+                <div class="empty-message">
+                    เป็นคนแรกที่แชร์ประสบการณ์การทำอาหารในชุมชน Mommeal!
+                </div>
+                <button class="btn btn-primary" onclick="createPost()">สร้างโพสต์แรก</button>
+            </div>
+        </main>
+
+        <!-- Floating Action Button -->
+        <button class="fab" onclick="createPost()">+</button>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav">
+            <a href="#" class="nav-item" onclick="navigateTo('home')">
+                <div class="nav-icon">🏠</div>
+                <span>Home</span>
+            </a>
+            <a href="#" class="nav-item" onclick="navigateTo('plan')">
+                <div class="nav-icon">📅</div>
+                <span>Plan</span>
+            </a>
+            <a href="#" class="nav-item" onclick="navigateTo('favorite')">
+                <div class="nav-icon">❤️</div>
+                <span>Favorite</span>
+            </a>
+            <a href="#" class="nav-item" onclick="navigateTo('mart')">
+                <div class="nav-icon">🛒</div>
+                <span>Mart</span>
+            </a>
+            <a href="#" class="nav-item active" onclick="navigateTo('community')">
+                <div class="nav-icon">💬</div>
+                <span>Community</span>
+            </a>
+        </nav>
+    </div>
+
+    <script>
+        let posts = [];
+        let currentUser = null;
+
+        // Check authentication
+        function checkAuth() {
+            const user = localStorage.getItem('currentUser');
+            if (!user) {
+                window.location.href = 'index.html';
+                return false;
+            }
+            currentUser = user;
+            return true;
+        }
+
+        // Initialize page
+        function initPage() {
+            if (!checkAuth()) return;
+            
+            loadUserPosts();
+            updateUserDisplay();
+            
+            showLoading();
+            setTimeout(hideLoading, 600);
+        }
+
+        // Load user posts
+        function loadUserPosts() {
+            const savedPosts = JSON.parse(localStorage.getItem('communityPosts') || '[]');
+            posts = savedPosts;
+            
+            // Add sample posts if none exist
+            if (posts.length === 0) {
+                addSamplePosts();
+            }
+            
+            renderPosts();
+        }
+
+        function addSamplePosts() {
+            const samplePosts = [
+                {
+                    id: 'post1',
+                    username: 'คุณแม่น้อย',
+                    userAvatar: '👩‍🍳',
+                    text: 'วันนี้ทำอาหารกับลูกๆ สนุกมากเลย! ลูกช่วยคลุกสลัด ช่วยล้างผัก ได้เรียนรู้เรื่องโภชนาการไปด้วย 🥗👨‍👩‍👧‍👦',
+                    likes: 1200,
+                    comments: 89,
+                    timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
+                    likedBy: []
+                },
+                {
+                    id: 'post2',
+                    username: 'MomCooking',
+                    userAvatar: '👩‍👧‍👦',
+                    text: 'เทคนิคทำน้ำจิ้มซีฟู้ดแบบบ้านๆ ที่ลูกๆ ชอบกิน ใครอยากรู้สูตรบอกได้เลยค่ะ 🦐🐟',
+                    likes: 856,
+                    comments: 67,
+                    timestamp: new Date(Date.now() - 5 * 60 * 60 * 1000).toISOString(),
+                    likedBy: []
+                },
+                {
+                    id: 'post3',
+                    username: 'HealthyMama',
+                    userAvatar: '🥗',
+                    text: 'สูตรสมูทตี้เขียวที่ลูกดื่มได้ไม่เบื่อ ใส่ผักแต่หวานอร่อย มีใครลองแล้วบ้างคะ? 🥬🍌',
+                    likes: 432,
+                    comments: 34,
+                    timestamp: new Date(Date.now() - 8 * 60 * 60 * 1000).toISOString(),
+                    likedBy: []
+                }
+            ];
+            
+            posts = samplePosts;
+            savePosts();
+        }
+
+        function updateUserDisplay() {
+            const usernameElement = document.getElementById('postUsername');
+            if (usernameElement && currentUser) {
+                usernameElement.textContent = currentUser;
+            }
+        }
+
+        // Render posts
+        function renderPosts() {
+            const container = document.getElementById('postsContainer');
+            const emptyState = document.getElementById('emptyState');
+            
+            if (posts.length === 0) {
+                container.style.display = 'none';
+                emptyState.style.display = 'block';
+                return;
+            }
+            
+            container.style.display = 'block';
+            emptyState.style.display = 'none';
+            
+            container.innerHTML = '';
+            
+            posts.forEach(post => {
+                const postElement = createPostElement(post);
+                container.appendChild(postElement);
+            });
+        }
+
+        function createPostElement(post) {
+            const div = document.createElement('div');
+            div.className = 'post-card';
+            div.innerHTML = `
+                <div class="post-header">
+                    <div class="user-avatar">${post.userAvatar}</div>
+                    <div class="user-info">
+                        <div class="username">${post.username}</div>
+                        <div class="post-time">${formatTime(post.timestamp)}</div>
+                    </div>
+                    <button class="post-menu" onclick="showPostMenu('${post.id}')">⋯</button>
+                </div>
+                
+                <div class="post-content">
+                    <div class="post-text">${post.text}</div>
+                    <div class="post-image">
+                        <div class="post-placeholder"></div>
+                    </div>
+                </div>
+                
+                <div class="post-actions">
+                    <div class="action-group">
+                        <button class="action-btn ${post.likedBy.includes(currentUser) ? 'liked' : ''}" 
+                                onclick="toggleLike(this, '${post.id}')" data-likes="${post.likes}">
+                            <span class="heart">${post.likedBy.includes(currentUser) ? '♥' : '♡'}</span>
+                            <span class="like-count">${formatNumber(post.likes)}</span>
+                        </button>
+                        <button class="action-btn" onclick="showComments('${post.id}')">
+                            <span class="comment-icon">💬</span>
+                            <span>${post.comments}</span>
+                        </button>
+                    </div>
+                    <button class="view-btn" onclick="viewPost('${post.id}')">View</button>
+                </div>
+            `;
+            return div;
+        }
+
+        function formatTime(timestamp) {
+            const now = new Date();
+            const postTime = new Date(timestamp);
+            const diffMs = now - postTime;
+            const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+            const diffDays = Math.floor(diffHours / 24);
+            
+            if (diffHours < 1) {
+                return 'เมื่อสักครู่';
+            } else if (diffHours < 24) {
+                return `${diffHours} ชั่วโมงที่แล้ว`;
+            } else if (diffDays === 1) {
+                return 'เมื่อวาน';
+            } else {
+                return `${diffDays} วันที่แล้ว`;
+            }
+        }
+
+        function formatNumber(num) {
+            if (num >= 1000) {
+                return (num / 1000).toFixed(1) + 'k';
+            }
+            return num.toString();
+        }
+
+        // Loading functions
+        function showLoading() {
+            document.getElementById('loading').style.display = 'flex';
+        }
+
+        function hideLoading() {
+            document.getElementById('loading').style.display = 'none';
+        }
+
+        // Post interactions
+        function toggleLike(button, postId) {
+            const post = posts.find(p => p.id === postId);
+            if (!post) return;
+            
+            const heart = button.querySelector('.heart');
+            const likeCount = button.querySelector('.like-count');
+            const isLiked = post.likedBy.includes(currentUser);
+            
+            if (isLiked) {
+                // Unlike
+                post.likedBy = post.likedBy.filter(user => user !== currentUser);
+                post.likes--;
+                heart.textContent = '♡';
+                button.classList.remove('liked');
+            } else {
+                // Like
+                post.likedBy.push(currentUser);
+                post.likes++;
+                heart.textContent = '♥';
+                button.classList.add('liked');
+                
+                // Like animation
+                heart.style.transform = 'scale(1.3)';
+                setTimeout(() => {
+                    heart.style.transform = 'scale(1)';
+                }, 200);
+            }
+            
+            likeCount.textContent = formatNumber(post.likes);
+            savePosts();
+        }
+
+        function showComments(postId) {
+            const post = posts.find(p => p.id === postId);
+            if (!post) return;
+            
+            let commentsHTML = `<h3 style="margin-bottom: 15px; color: #ff6b6b;">ความคิดเห็น (${post.comments})</h3>`;
+            
+            // Sample comments
+            const sampleComments = [
+                { user: 'แม่อุ๋ม', text: 'น่ารักมากเลยค่ะ ลูกๆ เก่งจัง! 😍' },
+                { user: 'MomLove', text: 'อยากลองทำบ้างแล้ว ขอสูตรหน่อยได้มั้ยคะ' },
+                { user: 'CookingMama', text: 'เห็นแล้วอบอุ่นใจมาก ครอบครวัวที่มีความสุข ❤️' }
+            ];
+            
+            sampleComments.forEach(comment => {
+                commentsHTML += `
+                    <div style="padding: 12px; margin-bottom: 10px; background: #f8f9fa; border-radius: 8px;">
+                        <div style="font-weight: 600; color: #ff6b6b; margin-bottom: 5px;">${comment.user}</div>
+                        <div>${comment.text}</div>
+                    </div>
+                `;
+            });
+            
+            commentsHTML += `
+                <div style="margin-top: 20px;">
+                    <textarea placeholder="เพิ่มความคิดเห็น..." style="width: 100%; padding: 10px; border: 2px solid #f0f0f0; border-radius: 8px; margin-bottom: 10px;" rows="3"></textarea>
+                    <button onclick="addComment('${postId}')" style="background: #ff6b6b; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-size: 14px; cursor: pointer;">โพสต์</button>
+                </div>
+            `;
+            
+            showModal(commentsHTML);
+        }
+
+        function addComment(postId) {
+            const textarea = document.querySelector('textarea');
+            const commentText = textarea.value.trim();
+            
+            if (!commentText) {
+                showNotification('กรุณาใส่ความคิดเห็น');
+                return;
+            }
+            
+            const post = posts.find(p => p.id === postId);
+            if (post) {
+                post.comments++;
+                savePosts();
+                renderPosts();
+            }
+            
+            closeModal();
+            showNotification('เพิ่มความคิดเห็นแล้ว! 💬');
+        }
+
+        function viewPost(postId) {
+            const post = posts.find(p => p.id === postId);
+            if (!post) return;
+            
+            showLoading();
+            setTimeout(() => {
+                hideLoading();
+                showNotification('กำลังเปิดโพสต์...');
+                // Here you could navigate to a detailed post view
+                // window.location.href = `post-detail.html?id=${postId}`;
+            }, 800);
+        }
+
+        function showPostMenu(postId) {
+            const post = posts.find(p => p.id === postId);
+            const isOwner = post && post.username === currentUser;
+            
+            let menuHTML = '<h3 style="margin-bottom: 15px; color: #ff6b6b;">ตัวเลือก</h3>';
+            
+            if (isOwner) {
+                menuHTML += `
+                    <div onclick="editPost('${postId}')" style="padding: 15px; border-bottom: 1px solid #f0f0f0; cursor: pointer;" 
+                         onmouseover="this.style.background='#f8f9fa'" onmouseout="this.style.background='white'">
+                        ✏️ แก้ไขโพสต์
+                    </div>
+                    <div onclick="deletePost('${postId}')" style="padding: 15px; border-bottom: 1px solid #f0f0f0; cursor: pointer; color: #ff4444;" 
+                         onmouseover="this.style.background='#fff5f5'" onmouseout="this.style.background='white'">
+                        🗑️ ลบโพสต์
+                    </div>
+                `;
+            }
+            
+            menuHTML += `
+                <div onclick="reportPost('${postId}')" style="padding: 15px; border-bottom: 1px solid #f0f0f0; cursor: pointer;" 
+                     onmouseover="this.style.background='#f8f9fa'" onmouseout="this.style.background='white'">
+                    🚨 รายงานโพสต์
+                </div>
+                <div onclick="sharePost('${postId}')" style="padding: 15px; cursor: pointer;" 
+                     onmouseover="this.style.background='#f8f9fa'" onmouseout="this.style.background='white'">
+                    📤 แชร์โพสต์
+                </div>
+            `;
+            
+            showModal(menuHTML);
+        }
+
+        function editPost(postId) {
+            const post = posts.find(p => p.id === postId);
+            if (!post) return;
+            
+            closeModal();
+            
+            const newText = prompt('แก้ไขโพสต์:', post.text);
+            if (newText && newText.trim()) {
+                post.text = newText.trim();
+                savePosts();
+                renderPosts();
+                showNotification('แก้ไขโพสต์แล้ว ✏️');
+            }
+        }
+
+        function deletePost(postId) {
+            closeModal();
+            
+            if (confirm('ต้องการลบโพสต์นี้ใช่หรือไม่?')) {
+                posts = posts.filter(p => p.id !== postId);
+                savePosts();
+                renderPosts();
+                showNotification('ลบโพสต์แล้ว 🗑️');
+            }
+        }
+
+        function reportPost(postId) {
+            closeModal();
+            showNotification('รายงานโพสต์แล้ว ระบบจะตรวจสอบ 🚨');
+        }
+
+        function sharePost(postId) {
+            const post = posts.find(p => p.id === postId);
+            if (!post) return;
+            
+            closeModal();
+            
+            const shareText = `${post.text}\n\n- แชร์จาก Mommeal Community`;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Mommeal Community',
+                    text: shareText
+                });
+            } else {
+                navigator.clipboard.writeText(shareText).then(() => {
+                    showNotification('คัดลอกโพสต์แล้ว! 📤');
+                });
+            }
+        }
+
+        // Create post
+        function createPost() {
+            let createHTML = `
+                <h3 style="margin-bottom: 15px; color: #ff6b6b;">สร้างโพสต์ใหม่</h3>
+                <div class="form-group">
+                    <label>เนื้อหาโพสต์:</label>
+                    <textarea id="postText" placeholder="แชร์ประสบการณ์การทำอาหารของคุณ..." 
+                              style="width: 100%; padding: 12px; border: 2px solid #f0f0f0; border-radius: 10px; font-family: inherit; resize: vertical; min-height: 100px;"></textarea>
+                </div>
+                <div style="margin: 15px 0;">
+                    <label style="display: flex; align-items: center; cursor: pointer; padding: 10px; background: #f8f9fa; border-radius: 8px;">
+                        <input type="file" accept="image/*" style="display: none;" onchange="handleImageUpload(this)">
+                        📷 เพิ่มรูปภาพ
+                    </label>
+                    <div id="imagePreview" style="margin-top: 10px; display: none;">
+                        <img style="width: 100%; height: 120px; object-fit: cover; border-radius: 8px;">
+                    </div>
+                </div>
+                <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px;">
+                    <button onclick="closeModal()" style="padding: 10px 20px; background: #f0f0f0; border: none; border-radius: 20px; color: #666; cursor: pointer;">ยกเลิก</button>
+                    <button onclick="submitPost()" style="padding: 10px 20px; background: #ff6b6b; color: white; border: none; border-radius: 20px; cursor: pointer;">โพสต์</button>
+                </div>
+            `;
+            
+            showModal(createHTML);
+        }
+
+        function handleImageUpload(input) {
+            const file = input.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const preview = document.getElementById('imagePreview');
+                    const img = preview.querySelector('img');
+                    img.src = e.target.result;
+                    preview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function submitPost() {
+            const postText = document.getElementById('postText').value.trim();
+            
+            if (!postText) {
+                showNotification('กรุณาใส่เนื้อหาโพสต์');
+                return;
+            }
+            
+            const newPost = {
+                id: 'post_' + Date.now(),
+                username: currentUser,
+                userAvatar: '👩‍🍳',
+                text: postText,
+                likes: 0,
+                comments: 0,
+                timestamp: new Date().toISOString(),
+                likedBy: []
+            };
+            
+            posts.unshift(newPost); // Add to beginning
+            savePosts();
+            renderPosts();
+            closeModal();
+            
+            showNotification('โพสต์สำเร็จ! 🎉');
+        }
+
+        // Menu functions
+        function showMenu() {
+            const menuOptions = [
+                { text: '📝 สร้างโพสต์', action: createPost },
+                { text: '👥 ค้นหาเพื่อน', action: searchFriends },
+                { text: '🔔 การแจ้งเตือน', action: showNotifications },
+                { text: '📊 สถิติของฉัน', action: showStats },
+                { text: '⚙️ ตั้งค่าชุมชน', action: showSettings }
+            ];
+            
+            let menuHTML = '<h3 style="margin-bottom: 15px; color: #ff6b6b;">เมนู</h3>';
+            menuOptions.forEach((option, index) => {
+                menuHTML += `
+                    <div onclick="handleMenuAction(${index})" style="padding: 15px; border-bottom: 1px solid #f0f0f0; cursor: pointer;" 
+                         onmouseover="this.style.background='#f8f9fa'" onmouseout="this.style.background='white'">
+                        ${option.text}
+                    </div>
+                `;
+            });
+            
+            showModal(menuHTML);
+            window.menuActions = menuOptions.map(option => option.action);
+        }
+
+        function handleMenuAction(index) {
+            closeModal();
+            if (window.menuActions && window.menuActions[index]) {
+                window.menuActions[index]();
+            }
+        }
+
+        function searchFriends() {
+            showNotification('🔍 ฟีเจอร์ค้นหาเพื่อน - กำลังพัฒนา');
+        }
+
+        function showNotifications() {
+            let notificationHTML = '<h3 style="margin-bottom: 15px; color: #ff6b6b;">การแจ้งเตือน</h3>';
+            
+            const notifications = [
+                { text: 'คุณแม่น้อย ถูกใจโพสต์ของคุณ', time: '5 นาทีที่แล้ว', type: 'like' },
+                { text: 'MomCooking แสดงความคิดเห็นในโพสต์ของคุณ', time: '1 ชั่วโมงที่แล้ว', type: 'comment' },
+                { text: 'HealthyMama เริ่มติดตามคุณ', time: '3 ชั่วโมงที่แล้ว', type: 'follow' }
+            ];
+            
+            if (notifications.length === 0) {
+                notificationHTML += '<div style="text-align: center; color: #666; padding: 20px;">ไม่มีการแจ้งเตือนใหม่</div>';
+            } else {
+                notifications.forEach(notif => {
+                    const icon = notif.type === 'like' ? '❤️' : notif.type === 'comment' ? '💬' : '👥';
+                    notificationHTML += `
+                        <div style="padding: 12px; margin-bottom: 8px; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #ff6b6b;">
+                            <div style="display: flex; align-items: center; margin-bottom: 5px;">
+                                <span style="margin-right: 8px;">${icon}</span>
+                                <span style="flex: 1;">${notif.text}</span>
+                            </div>
+                            <div style="font-size: 12px; color: #666;">${notif.time}</div>
+                        </div>
+                    `;
+                });
+            }
+            
+            showModal(notificationHTML);
+        }
+
+        function showStats() {
+            const userPosts = posts.filter(p => p.username === currentUser);
+            const totalLikes = userPosts.reduce((sum, p) => sum + p.likes, 0);
+            const totalComments = userPosts.reduce((sum, p) => sum + p.comments, 0);
+            
+            let statsHTML = `
+                <h3 style="margin-bottom: 15px; color: #ff6b6b;">สถิติของคุณ</h3>
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px;">
+                    <div style="text-align: center; padding: 20px; background: #f8f9fa; border-radius: 10px;">
+                        <div style="font-size: 24px; font-weight: bold; color: #ff6b6b;">${userPosts.length}</div>
+                        <div style="color: #666;">โพสต์</div>
+                    </div>
+                    <div style="text-align: center; padding: 20px; background: #f8f9fa; border-radius: 10px;">
+                        <div style="font-size: 24px; font-weight: bold; color: #ff6b6b;">${totalLikes}</div>
+                        <div style="color: #666;">ไลค์</div>
+                    </div>
+                    <div style="text-align: center; padding: 20px; background: #f8f9fa; border-radius: 10px;">
+                        <div style="font-size: 24px; font-weight: bold; color: #ff6b6b;">${totalComments}</div>
+                        <div style="color: #666;">ความคิดเห็น</div>
+                    </div>
+                    <div style="text-align: center; padding: 20px; background: #f8f9fa; border-radius: 10px;">
+                        <div style="font-size: 24px; font-weight: bold; color: #ff6b6b;">${Math.floor(Math.random() * 100)}</div>
+                        <div style="color: #666;">ผู้ติดตาม</div>
+                    </div>
+                </div>
+                <div style="margin-top: 20px; padding: 15px; background: linear-gradient(135deg, #fff5f5, #fff); border-radius: 10px; border: 1px solid #ffebee;">
+                    <div style="color: #ff6b6b; font-weight: 600; margin-bottom: 5px;">🏆 ความสำเร็จ</div>
+                    <div style="font-size: 14px; color: #666;">คุณเป็นสมาชิกที่ได้รับความนิยมในชุมชน Mommeal!</div>
+                </div>
+            `;
+            
+            showModal(statsHTML);
+        }
+
+        function showSettings() {
+            let settingsHTML = `
+                <h3 style="margin-bottom: 15px; color: #ff6b6b;">ตั้งค่าชุมชน</h3>
+                <div style="margin-bottom: 15px;">
+                    <label style="display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #f0f0f0;">
+                        <span>แจ้งเตือนเมื่อมีคนไลค์</span>
+                        <input type="checkbox" checked style="transform: scale(1.2);">
+                    </label>
+                    <label style="display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #f0f0f0;">
+                        <span>แจ้งเตือนเมื่อมีความคิดเห็น</span>
+                        <input type="checkbox" checked style="transform: scale(1.2);">
+                    </label>
+                    <label style="display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #f0f0f0;">
+                        <span>แจ้งเตือนเมื่อมีผู้ติดตามใหม่</span>
+                        <input type="checkbox" style="transform: scale(1.2);">
+                    </label>
+                    <label style="display: flex; align-items: center; justify-content: space-between; padding: 12px 0;">
+                        <span>แสดงโพสต์ในหน้าแรก</span>
+                        <input type="checkbox" checked style="transform: scale(1.2);">
+                    </label>
+                </div>
+                <div style="margin-top: 20px;">
+                    <button onclick="saveSettings()" style="width: 100%; padding: 12px; background: #ff6b6b; color: white; border: none; border-radius: 8px; font-weight: 600;">บันทึกการตั้งค่า</button>
+                </div>
+            `;
+            
+            showModal(settingsHTML);
+        }
+
+        function saveSettings() {
+            closeModal();
+            showNotification('บันทึกการตั้งค่าแล้ว ⚙️');
+        }
+
+        // Data persistence
+        function savePosts() {
+            localStorage.setItem('communityPosts', JSON.stringify(posts));
+        }
+
+        // Modal functions
+        function showModal(content) {
+            const modal = document.createElement('div');
+            modal.className = 'modal';
+            modal.innerHTML = `
+                <div class="modal-content">
+                    ${content}
+                    ${!content.includes('ยกเลิก') ? '<button onclick="closeModal()" style="width: 100%; margin-top: 20px; padding: 10px; background: #f0f0f0; border: none; border-radius: 8px; color: #666;">ปิด</button>' : ''}
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            
+            setTimeout(() => modal.classList.add('show'), 100);
+            
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    closeModal();
+                }
+            });
+            
+            window.currentModal = modal;
+        }
+
+        function closeModal() {
+            if (window.currentModal) {
+                window.currentModal.classList.remove('show');
+                setTimeout(() => {
+                    if (window.currentModal && window.currentModal.parentNode) {
+                        window.currentModal.parentNode.removeChild(window.currentModal);
+                    }
+                    window.currentModal = null;
+                }, 300);
+            }
+        }
+
+        // Navigation
+        function goBack() {
+            showLoading();
+            setTimeout(() => {
+                window.location.href = 'home.html';
+            }, 300);
+        }
+
+        function navigateTo(page) {
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            event.target.closest('.nav-item').classList.add('active');
+            
+            showLoading();
+            setTimeout(() => {
+                hideLoading();
+                
+                switch(page) {
+                    case 'home':
+                        window.location.href = 'home.html';
+                        break;
+                    case 'plan':
+                        window.location.href = 'plan.html';
+                        break;
+                    case 'favorite':
+                        window.location.href = 'favorite.html';
+                        break;
+                    case 'mart':
+                        window.location.href = 'mart.html';
+                        break;
+                    case 'community':
+                        window.location.href = 'community.html';
+                        // Already on community page
+                        break;
+                }
+            }, 500);
+        }
+
+        // Notification function
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 70px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
+                color: white;
+                padding: 12px 20px;
+                border-radius: 25px;
+                font-size: 14px;
+                font-weight: 500;
+                z-index: 1000;
+                box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+                animation: slideDown 0.3s ease;
+                max-width: 300px;
+                text-align: center;
+            `;
+            
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideUp 0.3s ease forwards';
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 300);
+            }, 2500);
+        }
+
+        // Add CSS animations for notifications
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideDown {
+                from { transform: translateX(-50%) translateY(-100%); opacity: 0; }
+                to { transform: translateX(-50%) translateY(0); opacity: 1; }
+            }
+            @keyframes slideUp {
+                from { transform: translateX(-50%) translateY(0); opacity: 1; }
+                to { transform: translateX(-50%) translateY(-100%); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Initialize page when loaded
+        document.addEventListener('DOMContentLoaded', initPage);
+
+        console.log('💬 Community Page - Loaded successfully!');
+    </script>
+</body>
+</html>

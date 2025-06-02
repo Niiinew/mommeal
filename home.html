@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>หน้าแรก - Mommeal</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #f8f9fa;
+            color: #333;
+            line-height: 1.5;
+        }
+
+        /* Mobile First Design */
+        .mobile-container {
+            max-width: 414px;
+            margin: 0 auto;
+            background: white;
+            min-height: 100vh;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        /* Header */
+        .header {
+            background: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #f0f0f0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .menu-btn {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        .logo {
+            font-size: 18px;
+            font-weight: bold;
+            color: #666;
+            letter-spacing: 1px;
+        }
+
+        .search-btn {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 20px;
+            padding-bottom: 100px;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        /* Recommended Card */
+        .recommendation-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .recommendation-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .food-image {
+            width: 100%;
+            height: 200px;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 200"><rect fill="%23e8f5e8" width="400" height="200"/><circle fill="%23ff6b6b" cx="100" cy="100" r="30"/><circle fill="%23ffd93d" cx="200" cy="80" r="25"/><circle fill="%234ecdc4" cx="300" cy="120" r="35"/><rect fill="%23a8e6cf" x="150" y="60" width="40" height="20" rx="10"/><rect fill="%23ffaaa5" x="80" y="140" width="50" height="15" rx="7"/><text x="200" y="110" text-anchor="middle" fill="%23666" font-family="Arial" font-size="14">🥗🥑🍖</text></svg>') center/cover;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            background-color: #f8f9fa;
+        }
+
+        .card-content {
+            padding: 20px;
+        }
+
+        .dish-name {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .dish-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .contains-info {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .save-btn {
+            background: none;
+            border: none;
+            color: #666;
+            font-size: 14px;
+            cursor: pointer;
+            padding: 5px 10px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .save-btn:hover {
+            background: #f0f0f0;
+            color: #ff6b6b;
+        }
+
+        /* Browse Categories */
+        .browse-section {
+            margin: 25px 0;
+        }
+
+        .browse-btn {
+            width: 100%;
+            padding: 15px;
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 500;
+            color: #333;
+            cursor: pointer;
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .browse-btn:hover {
+            border-color: #ff6b6b;
+            background: #fff5f5;
+            color: #ff6b6b;
+        }
+
+        .browse-btn.secondary {
+            background: #f5f5f5;
+            border-color: #d0d0d0;
+        }
+
+        /* Allergies Section */
+        .allergies-section {
+            margin: 25px 0;
+        }
+
+        .allergies-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .allergies-info {
+            color: #666;
+            font-size: 14px;
+            background: #f8f9fa;
+            padding: 12px 15px;
+            border-radius: 8px;
+            border-left: 4px solid #ff6b6b;
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 414px;
+            background: white;
+            border-top: 1px solid #e0e0e0;
+            padding: 10px 0;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: #666;
+            font-size: 12px;
+            padding: 8px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            min-width: 60px;
+        }
+
+        .nav-item:hover,
+        .nav-item.active {
+            color: #ff6b6b;
+            background: #fff5f5;
+        }
+
+        .nav-icon {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+
+        /* Side Menu */
+        .side-menu {
+            position: fixed;
+            top: 0;
+            left: -300px;
+            width: 300px;
+            height: 100vh;
+            background: white;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 200;
+            transition: left 0.3s ease;
+            padding: 60px 20px 20px;
+        }
+
+        .side-menu.open {
+            left: 0;
+        }
+
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 150;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .menu-overlay.open {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .menu-item {
+            display: block;
+            padding: 15px 0;
+            color: #333;
+            text-decoration: none;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 16px;
+            transition: color 0.3s ease;
+        }
+
+        .menu-item:hover {
+            color: #ff6b6b;
+        }
+
+        .close-menu {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(5px);
+            z-index: 300;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #ff6b6b;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive */
+        @media (min-width: 415px) {
+            .mobile-container {
+                border-radius: 20px;
+                margin-top: 20px;
+                min-height: calc(100vh - 40px);
+            }
+        }
+
+        /* Animation */
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loading" id="loading">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Side Menu Overlay -->
+    <div class="menu-overlay" id="menuOverlay" onclick="closeMenu()"></div>
+
+    <!-- Side Menu -->
+    <div class="side-menu" id="sideMenu">
+        <button class="close-menu" onclick="closeMenu()">×</button>
+        <a href="#" class="menu-item" onclick="navigateTo('profile')">👤 โปรไฟล์</a>
+        <a href="#" class="menu-item" onclick="navigateTo('settings')">⚙️ ตั้งค่า</a>
+        <a href="#" class="menu-item" onclick="navigateTo('favorites')">❤️ รายการโปรด</a>
+        <a href="#" class="menu-item" onclick="navigateTo('history')">📖 ประวัติการดู</a>
+        <a href="#" class="menu-item" onclick="navigateTo('help')">❓ ช่วยเหลือ</a>
+        <a href="#" class="menu-item" onclick="logout()">🚪 ออกจากระบบ</a>
+    </div>
+
+    <div class="mobile-container">
+        <!-- Header -->
+        <header class="header">
+            <button class="menu-btn" onclick="openMenu()">☰</button>
+            <div class="logo">MOMMEAL</div>
+            <button class="search-btn" onclick="openSearch()">🔍</button>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content fade-in">
+            <!-- Recommended Section -->
+            <section>
+                <h2 class="section-title">Recommended for You</h2>
+                <div class="recommendation-card" onclick="viewRecipe('chicken-stir-fry')">
+                    <div class="food-image">
+                        🥗🥑🍖
+                    </div>
+                    <div class="card-content">
+                        <h3 class="dish-name">Chicken Stir-Fried Vegetables</h3>
+                        <div class="dish-info">
+                            <span class="contains-info">Contain: soy</span>
+                            <button class="save-btn" onclick="event.stopPropagation(); toggleSave(this)">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Browse Categories -->
+            <section class="browse-section">
+                <button class="browse-btn" onclick="browseCategories()">Browse Categories</button>
+                <button class="browse-btn secondary" onclick="browseCategories()">Browse Categories</button>
+            </section>
+
+            <!-- Allergies Section -->
+            <section class="allergies-section">
+                <h3 class="allergies-title">You Allergies</h3>
+                <div class="allergies-info">
+                    Dairy, Peanuts
+                </div>
+            </section>
+        </main>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav">
+            <a href="#" class="nav-item active" onclick="setActiveNav(this, 'home')">
+                <div class="nav-icon">🏠</div>
+                <span>Home</span>
+            </a>
+            <a href="#" class="nav-item" onclick="setActiveNav(this, 'plan')">
+                <div class="nav-icon">📅</div>
+                <span>Plan</span>
+            </a>
+            <a href="#" class="nav-item" onclick="setActiveNav(this, 'favorite')">
+                <div class="nav-icon">❤️</div>
+                <span>Favorite</span>
+            </a>
+            <a href="#" class="nav-item" onclick="setActiveNav(this, 'mart')">
+                <div class="nav-icon">🛒</div>
+                <span>Mart</span>
+            </a>
+            <a href="#" class="nav-item" onclick="setActiveNav(this, 'community')">
+                <div class="nav-icon">💬</div>
+                <span>Community</span>
+            </a>
+        </nav>
+    </div>
+
+    <script>
+        // Check authentication
+        function checkAuth() {
+            const currentUser = localStorage.getItem('currentUser');
+            if (!currentUser) {
+                window.location.href = 'index.html';
+                return false;
+            }
+            return true;
+        }
+
+        // Initialize page
+        function initPage() {
+            if (!checkAuth()) return;
+            
+            const username = localStorage.getItem('currentUser');
+            console.log(`Welcome ${username}!`);
+            
+            // Show loading briefly for smooth transition
+            showLoading();
+            setTimeout(hideLoading, 800);
+        }
+
+        // Loading functions
+        function showLoading() {
+            document.getElementById('loading').style.display = 'flex';
+        }
+
+        function hideLoading() {
+            document.getElementById('loading').style.display = 'none';
+        }
+
+        // Menu functions
+        function openMenu() {
+            document.getElementById('sideMenu').classList.add('open');
+            document.getElementById('menuOverlay').classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeMenu() {
+            document.getElementById('sideMenu').classList.remove('open');
+            document.getElementById('menuOverlay').classList.remove('open');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Navigation functions
+        function setActiveNav(element, page) {
+            // Remove active from all nav items
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // Add active to clicked item
+            element.classList.add('active');
+            
+            // Handle navigation
+            showLoading();
+            setTimeout(() => {
+                hideLoading();
+                console.log(`Navigating to ${page}`);
+                
+                // Here you can add actual page navigation
+                switch(page) {
+                    case 'home':
+                        // Already on home
+                        break;
+                    case 'plan':
+                         window.location.href = 'plan.html';
+                        //showNotification('Plan page - Coming soon!');
+                        break;
+                    case 'favorite':
+                         window.location.href = 'favorite.html';
+                        //showNotification('Favorites page - Coming soon!');
+                        break;
+                    case 'mart':
+                         window.location.href = 'mart.html';
+                        //showNotification('Mart page - Coming soon!');
+                        break;
+                    case 'community':
+                         window.location.href = 'community.html';
+                        //showNotification('Community page - Coming soon!');
+                        break;
+                }
+            }, 500);
+        }
+
+        // Recipe functions
+        function viewRecipe(recipeId) {
+            showLoading();
+            setTimeout(() => {
+                hideLoading();
+                showNotification('Opening recipe details...');
+                // window.location.href = `recipe-detail.html?id=${recipeId}`;
+            }, 800);
+        }
+
+        function toggleSave(button) {
+            const isSaved = button.textContent === 'Saved';
+            button.textContent = isSaved ? 'Save' : 'Saved';
+            button.style.color = isSaved ? '#666' : '#ff6b6b';
+            
+            showNotification(isSaved ? 'Removed from favorites' : 'Added to favorites');
+        }
+
+        // Category functions
+        function browseCategories() {
+            showLoading();
+            setTimeout(() => {
+                hideLoading();
+                showNotification('Browse Categories - Coming soon!');
+                // window.location.href = 'categories.html';
+            }, 600);
+        }
+
+        // Search function
+        function openSearch() {
+            showNotification('Search feature - Coming soon!');
+        }
+
+        // Menu navigation
+        function navigateTo(page) {
+            closeMenu();
+            showLoading();
+            
+            setTimeout(() => {
+                hideLoading();
+                
+                switch(page) {
+                    case 'profile':
+                         window.location.href = 'profile.html';
+                        //showNotification('Profile page - Coming soon!');
+                        break;
+                    case 'settings':
+                        showNotification('Settings page - Coming soon!');
+                        break;
+                    case 'favorites':
+                        showNotification('Favorites page - Coming soon!');
+                        break;
+                    case 'history':
+                        showNotification('History page - Coming soon!');
+                        break;
+                    case 'help':
+                        showNotification('Help page - Coming soon!');
+                        break;
+                }
+            }, 500);
+        }
+
+        // Logout function
+        function logout() {
+            if (confirm('คุณต้องการออกจากระบบใช่หรือไม่?')) {
+                localStorage.removeItem('currentUser');
+                localStorage.removeItem('loginTime');
+                showLoading();
+                
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 1000);
+            }
+        }
+
+        // Notification function
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 70px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
+                color: white;
+                padding: 12px 20px;
+                border-radius: 25px;
+                font-size: 14px;
+                font-weight: 500;
+                z-index: 1000;
+                box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+                animation: slideDown 0.3s ease;
+                max-width: 300px;
+                text-align: center;
+            `;
+            
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideUp 0.3s ease forwards';
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 300);
+            }, 2500);
+        }
+
+        // Add CSS animations for notifications
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideDown {
+                from { transform: translateX(-50%) translateY(-100%); opacity: 0; }
+                to { transform: translateX(-50%) translateY(0); opacity: 1; }
+            }
+            @keyframes slideUp {
+                from { transform: translateX(-50%) translateY(0); opacity: 1; }
+                to { transform: translateX(-50%) translateY(-100%); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Initialize page when loaded
+        document.addEventListener('DOMContentLoaded', initPage);
+
+        // Handle back button
+        window.addEventListener('popstate', function(e) {
+            if (!checkAuth()) return;
+        });
+
+        console.log('🍼 Mommeal Home - Loaded successfully!');
+    </script>
+</body>
+</html>

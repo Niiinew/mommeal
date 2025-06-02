@@ -1,0 +1,1248 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ตลาดออนไลน์ - Mommeal</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #f8f9fa;
+            color: #333;
+            line-height: 1.5;
+        }
+
+        /* Mobile Container */
+        .mobile-container {
+            max-width: 414px;
+            margin: 0 auto;
+            background: #f5f3f0;
+            min-height: 100vh;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(245, 243, 240, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 15px 20px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+        }
+
+        .back-btn {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            padding: 8px;
+            margin-right: 15px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        .header-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #666;
+            letter-spacing: 1px;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .favorite-btn, .menu-btn {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            color: #666;
+        }
+
+        .favorite-btn:hover, .menu-btn:hover {
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        /* Delivery Address */
+        .delivery-section {
+            margin-bottom: 20px;
+        }
+
+        .delivery-label {
+            font-size: 12px;
+            color: #666;
+            font-weight: 600;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .delivery-address {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .delivery-address:hover {
+            color: #ff6b6b;
+        }
+
+        .address-text {
+            font-size: 14px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .dropdown-icon {
+            font-size: 12px;
+            color: #666;
+        }
+
+        /* Search Bar */
+        .search-section {
+            margin-bottom: 25px;
+        }
+
+        .search-bar {
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 15px 20px 15px 50px;
+            border: none;
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            box-shadow: 0 4px 20px rgba(255, 107, 107, 0.2);
+            background: white;
+        }
+
+        .search-input::placeholder {
+            color: #999;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+            font-size: 18px;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 0 20px;
+            padding-bottom: 100px;
+        }
+
+        /* Store Categories */
+        .store-categories {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+            overflow-x: auto;
+            padding: 5px 0;
+        }
+
+        .store-categories::-webkit-scrollbar {
+            display: none;
+        }
+
+        .store-category {
+            min-width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .store-category:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .store-category.tops {
+            background: linear-gradient(135deg, #ff4444, #ff6666);
+        }
+
+        .store-category.gourmet {
+            background: linear-gradient(135deg, #aa1144, #cc2266);
+        }
+
+        .store-category.big-c {
+            background: linear-gradient(135deg, #88cc44, #aae066);
+        }
+
+        .store-logo {
+            width: 60px;
+            height: 60px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 12px;
+            color: #333;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Product Grid */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .product-card {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 15px;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 120px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .product-image.vegetables {
+            background: linear-gradient(135deg, rgba(76, 175, 80, 0.9), rgba(139, 195, 74, 0.9)),
+                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 120"><rect fill="%23c8e6c9" width="200" height="120"/><circle fill="%234caf50" cx="50" cy="30" r="15"/><circle fill="%238bc34a" cx="150" cy="40" r="12"/><circle fill="%23ff9800" cx="100" cy="60" r="18"/><rect fill="%23f44336" x="30" y="80" width="25" height="20" rx="3"/><rect fill="%23ffeb3b" x="120" y="85" width="30" height="15" rx="8"/></svg>');
+        }
+
+        .product-image.meat {
+            background: linear-gradient(135deg, rgba(244, 67, 54, 0.8), rgba(233, 30, 99, 0.8)),
+                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 120"><rect fill="%23ffcdd2" width="200" height="120"/><ellipse fill="%23f44336" cx="60" cy="40" rx="25" ry="15"/><ellipse fill="%23e91e63" cx="140" cy="60" rx="30" ry="18"/><ellipse fill="%23ff5722" cx="100" cy="80" rx="20" ry="12"/></svg>');
+        }
+
+        .product-image.beef {
+            background: linear-gradient(135deg, rgba(139, 69, 19, 0.9), rgba(160, 82, 45, 0.9)),
+                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 120"><rect fill="%23d7ccc8" width="200" height="120"/><ellipse fill="%238b4513" cx="70" cy="45" rx="35" ry="20"/><ellipse fill="%23a0522d" cx="130" cy="65" rx="30" ry="25"/><ellipse fill="%23cd853f" cx="50" cy="85" rx="20" ry="15"/></svg>');
+        }
+
+        .product-image.dairy {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(240, 240, 240, 0.95)),
+                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 120"><rect fill="%23fafafa" width="200" height="120"/><rect fill="%23ffffff" x="30" y="20" width="40" height="60" rx="5"/><rect fill="%23fff8e1" x="90" y="30" width="35" height="50" rx="8"/><circle fill="%23ffffff" cx="150" cy="60" r="25"/><rect fill="%23f5f5f5" x="60" y="85" width="80" height="20" rx="10"/></svg>');
+        }
+
+        .product-content {
+            padding: 15px;
+        }
+
+        .product-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+            line-height: 1.3;
+        }
+
+        .product-price {
+            font-size: 16px;
+            font-weight: 700;
+            color: #ff6b6b;
+            margin-bottom: 10px;
+        }
+
+        .product-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .add-to-cart {
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .add-to-cart:hover {
+            background: #ff5252;
+            transform: scale(1.05);
+        }
+
+        .product-rating {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 12px;
+            color: #666;
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 414px;
+            background: white;
+            border-top: 1px solid #e0e0e0;
+            padding: 10px 0;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: #666;
+            font-size: 12px;
+            padding: 8px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            min-width: 60px;
+        }
+
+        .nav-item:hover,
+        .nav-item.active {
+            color: #ff6b6b;
+            background: #fff5f5;
+        }
+
+        .nav-icon {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+
+        /* Cart Badge */
+        .cart-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #ff6b6b;
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 10px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(5px);
+            z-index: 300;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #ff6b6b;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Fade In Animation */
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive */
+        @media (min-width: 415px) {
+            .mobile-container {
+                border-radius: 20px;
+                margin-top: 20px;
+                min-height: calc(100vh - 40px);
+            }
+        }
+
+        /* Modal Styles */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modal.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 300px;
+            width: 90%;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transform: scale(0.8);
+            transition: transform 0.3s ease;
+        }
+
+        .modal.show .modal-content {
+            transform: scale(1);
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loading" id="loading">
+        <div class="spinner"></div>
+    </div>
+
+    <div class="mobile-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-top">
+                <div class="header-left">
+                    <button class="back-btn" onclick="goBack()">←</button>
+                    <div class="header-title">MOMMEAL</div>
+                </div>
+                <div class="header-actions">
+                    <button class="favorite-btn" onclick="toggleFavoriteStore()">♡</button>
+                    <button class="menu-btn" onclick="showMenu()">⋯</button>
+                </div>
+            </div>
+
+            <!-- Delivery Section -->
+            <div class="delivery-section">
+                <div class="delivery-label">DELIVER TO</div>
+                <div class="delivery-address" onclick="changeAddress()">
+                    <span class="address-text" id="deliveryAddress">123 Soi XXX, XXXXX XXXXXXXX</span>
+                    <span class="dropdown-icon">▼</span>
+                </div>
+            </div>
+
+            <!-- Search Bar -->
+            <div class="search-section">
+                <div class="search-bar">
+                    <div class="search-icon">🔍</div>
+                    <input type="text" class="search-input" placeholder="ค้นหาสินค้า..." id="searchInput">
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content fade-in">
+            <!-- Store Categories -->
+            <div class="store-categories">
+                <div class="store-category tops" onclick="selectStore('tops')">
+                    <div class="store-logo" style="background: #ff4444; color: white;">Tops</div>
+                </div>
+                <div class="store-category gourmet" onclick="selectStore('gourmet')">
+                    <div class="store-logo" style="background: #aa1144; color: white; font-size: 10px;">Gourmet Market</div>
+                </div>
+                <div class="store-category big-c" onclick="selectStore('big-c')">
+                    <div class="store-logo" style="background: #88cc44; color: white;">Big C</div>
+                </div>
+            </div>
+
+            <!-- Product Grid -->
+            <div class="product-grid">
+                <!-- Vegetables Card -->
+                <div class="product-card" onclick="viewProduct('vegetables')">
+                    <div class="product-image vegetables"></div>
+                    <div class="product-content">
+                        <div class="product-title">ผักสดรวม</div>
+                        <div class="product-price">฿120-180</div>
+                        <div class="product-actions">
+                            <button class="add-to-cart" onclick="event.stopPropagation(); addToCart('vegetables')">เพิ่ม</button>
+                            <div class="product-rating">
+                                <span>⭐</span>
+                                <span>4.5</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Meat Card -->
+                <div class="product-card" onclick="viewProduct('meat')">
+                    <div class="product-image meat"></div>
+                    <div class="product-content">
+                        <div class="product-title">เนื้อสดคุณภาพ</div>
+                        <div class="product-price">฿280-450</div>
+                        <div class="product-actions">
+                            <button class="add-to-cart" onclick="event.stopPropagation(); addToCart('meat')">เพิ่ม</button>
+                            <div class="product-rating">
+                                <span>⭐</span>
+                                <span>4.8</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Beef Card -->
+                <div class="product-card" onclick="viewProduct('beef')">
+                    <div class="product-image beef"></div>
+                    <div class="product-content">
+                        <div class="product-title">เนื้อวัวพรีเมียม</div>
+                        <div class="product-price">฿520-680</div>
+                        <div class="product-actions">
+                            <button class="add-to-cart" onclick="event.stopPropagation(); addToCart('beef')">เพิ่ม</button>
+                            <div class="product-rating">
+                                <span>⭐</span>
+                                <span>4.9</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dairy Card -->
+                <div class="product-card" onclick="viewProduct('dairy')">
+                    <div class="product-image dairy"></div>
+                    <div class="product-content">
+                        <div class="product-title">ผลิตภัณฑ์นม</div>
+                        <div class="product-price">฿45-120</div>
+                        <div class="product-actions">
+                            <button class="add-to-cart" onclick="event.stopPropagation(); addToCart('dairy')">เพิ่ม</button>
+                            <div class="product-rating">
+                                <span>⭐</span>
+                                <span>4.6</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav">
+            <a href="#" class="nav-item" onclick="navigateTo('home')">
+                <div class="nav-icon">🏠</div>
+                <span>Home</span>
+            </a>
+            <a href="#" class="nav-item" onclick="navigateTo('plan')">
+                <div class="nav-icon">📅</div>
+                <span>Plan</span>
+            </a>
+            <a href="#" class="nav-item" onclick="navigateTo('favorite')">
+                <div class="nav-icon">❤️</div>
+                <span>Favorite</span>
+            </a>
+            <a href="#" class="nav-item active" onclick="navigateTo('mart')">
+                <div class="nav-icon" style="position: relative;">
+                    🛒
+                    <span class="cart-badge" id="cartBadge" style="display: none;">0</span>
+                </div>
+                <span>Mart</span>
+            </a>
+            <a href="#" class="nav-item" onclick="navigateTo('community')">
+                <div class="nav-icon">💬</div>
+                <span>Community</span>
+            </a>
+        </nav>
+    </div>
+
+    <script>
+        let cartItems = [];
+        let currentStore = 'tops';
+        let favoriteStores = [];
+
+        // Check authentication
+        function checkAuth() {
+            const user = localStorage.getItem('currentUser');
+            if (!user) {
+                window.location.href = 'index.html';
+                return false;
+            }
+            return true;
+        }
+
+        // Initialize page
+        function initPage() {
+            if (!checkAuth()) return;
+            
+            loadUserData();
+            loadCartData();
+            setupSearchFunctionality();
+            
+            showLoading();
+            setTimeout(hideLoading, 600);
+        }
+
+        // Load user data
+        function loadUserData() {
+            const username = localStorage.getItem('currentUser');
+            const savedCart = JSON.parse(localStorage.getItem(`cart_${username}`) || '[]');
+            const savedFavoriteStores = JSON.parse(localStorage.getItem(`favoriteStores_${username}`) || '[]');
+            
+            cartItems = savedCart;
+            favoriteStores = savedFavoriteStores;
+            
+            updateCartBadge();
+            updateFavoriteButton();
+        }
+
+        // Loading functions
+        function showLoading() {
+            document.getElementById('loading').style.display = 'flex';
+        }
+
+        function hideLoading() {
+            document.getElementById('loading').style.display = 'none';
+        }
+
+        // Store selection
+        function selectStore(store) {
+            currentStore = store;
+            
+            // Update visual selection
+            document.querySelectorAll('.store-category').forEach(category => {
+                category.style.transform = '';
+                category.style.boxShadow = '0 4px 15px rgba(0, 0, 0, 0.1)';
+            });
+            
+            const selectedStore = document.querySelector(`.store-category.${store}`);
+            selectedStore.style.transform = 'translateY(-5px) scale(1.05)';
+            selectedStore.style.boxShadow = '0 8px 25px rgba(0, 0, 0, 0.2)';
+            
+            // Update product availability
+            updateProductsForStore(store);
+            
+            const storeNames = {
+                'tops': 'Tops Supermarket',
+                'gourmet': 'Gourmet Market',
+                'big-c': 'Big C Supercenter'
+            };
+            
+            showNotification(`เลือกร้าน ${storeNames[store]} แล้ว 🏪`);
+        }
+
+        function updateProductsForStore(store) {
+            // Simulate different availability/prices for different stores
+            const productCards = document.querySelectorAll('.product-card');
+            
+            productCards.forEach(card => {
+                const priceElement = card.querySelector('.product-price');
+                const addButton = card.querySelector('.add-to-cart');
+                
+                // Simulate different pricing
+                const basePrice = Math.floor(Math.random() * 200) + 50;
+                const storeMultiplier = {
+                    'tops': 1.0,
+                    'gourmet': 1.2,
+                    'big-c': 0.9
+                };
+                
+                const adjustedPrice = Math.floor(basePrice * storeMultiplier[store]);
+                priceElement.textContent = `฿${adjustedPrice}`;
+                
+                // Simulate availability
+                const availability = Math.random() > 0.1; // 90% availability
+                if (availability) {
+                    addButton.disabled = false;
+                    addButton.textContent = 'เพิ่ม';
+                    addButton.style.background = '#ff6b6b';
+                } else {
+                    addButton.disabled = true;
+                    addButton.textContent = 'หมด';
+                    addButton.style.background = '#ccc';
+                }
+            });
+        }
+
+        // Product functions
+        function viewProduct(productId) {
+            showLoading();
+            
+            setTimeout(() => {
+                hideLoading();
+                
+                const products = {
+                    'vegetables': 'ผักสดรวม',
+                    'meat': 'เนื้อสดคุณภาพ',
+                    'beef': 'เนื้อวัวพรีเมียม',
+                    'dairy': 'ผลิตภัณฑ์นม'
+                };
+                
+                showNotification(`กำลังดูสินค้า: ${products[productId]}`);
+                // Here you could navigate to a product detail page
+                // window.location.href = `product-detail.html?id=${productId}&store=${currentStore}`;
+            }, 800);
+        }
+
+        function addToCart(productId) {
+            const products = {
+                'vegetables': { name: 'ผักสดรวม', price: 150, image: 'vegetables' },
+                'meat': { name: 'เนื้อสดคุณภาพ', price: 350, image: 'meat' },
+                'beef': { name: 'เนื้อวัวพรีเมียม', price: 600, image: 'beef' },
+                'dairy': { name: 'ผลิตภัณฑ์นม', price: 80, image: 'dairy' }
+            };
+            
+            const product = products[productId];
+            if (!product) return;
+            
+            // Check if item already in cart
+            const existingItem = cartItems.find(item => item.id === productId && item.store === currentStore);
+            
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cartItems.push({
+                    id: productId,
+                    ...product,
+                    store: currentStore,
+                    quantity: 1,
+                    dateAdded: new Date().toISOString()
+                });
+            }
+            
+            saveCartData();
+            updateCartBadge();
+            
+            showNotification(`เพิ่ม ${product.name} ลงตะกร้าแล้ว 🛒`);
+        }
+
+        // Cart functions
+        function loadCartData() {
+            updateCartBadge();
+        }
+
+        function saveCartData() {
+            const username = localStorage.getItem('currentUser');
+            localStorage.setItem(`cart_${username}`, JSON.stringify(cartItems));
+        }
+
+        function updateCartBadge() {
+            const badge = document.getElementById('cartBadge');
+            const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+            
+            if (totalItems > 0) {
+                badge.textContent = totalItems;
+                badge.style.display = 'flex';
+            } else {
+                badge.style.display = 'none';
+            }
+        }
+
+        function viewCart() {
+            if (cartItems.length === 0) {
+                showNotification('ตะกร้าสินค้าว่างเปล่า');
+                return;
+            }
+            
+            let cartHTML = '<div style="max-height: 400px; overflow-y: auto;">';
+            cartHTML += '<h3 style="margin-bottom: 15px; color: #ff6b6b;">ตะกร้าสินค้า</h3>';
+            
+            let total = 0;
+            cartItems.forEach(item => {
+                const itemTotal = item.price * item.quantity;
+                total += itemTotal;
+                
+                cartHTML += `
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 10px; padding: 10px; background: #f8f9fa; border-radius: 8px;">
+                        <div>
+                            <div style="font-weight: 600;">${item.name}</div>
+                            <div style="font-size: 12px; color: #666;">${item.store}</div>
+                            <div style="color: #ff6b6b;">฿${item.price} x ${item.quantity}</div>
+                        </div>
+                        <div style="text-align: right;">
+                            <div style="font-weight: 600;">฿${itemTotal}</div>
+                            <button onclick="removeFromCart('${item.id}', '${item.store}')" style="background: #ff4444; color: white; border: none; padding: 4px 8px; border-radius: 4px; font-size: 10px; margin-top: 5px;">ลบ</button>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            cartHTML += `</div>
+                <div style="border-top: 2px solid #ff6b6b; margin-top: 15px; padding-top: 15px;">
+                    <div style="display: flex; justify-content: space-between; font-size: 18px; font-weight: 700; color: #ff6b6b;">
+                        <span>รวมทั้งหมด:</span>
+                        <span>฿${total}</span>
+                    </div>
+                    <div style="margin-top: 15px; display: flex; gap: 10px;">
+                        <button onclick="clearCart()" style="flex: 1; padding: 10px; background: #f0f0f0; border: none; border-radius: 8px; color: #666;">ล้างตะกร้า</button>
+                        <button onclick="checkout()" style="flex: 2; padding: 10px; background: #ff6b6b; color: white; border: none; border-radius: 8px; font-weight: 600;">สั่งซื้อ</button>
+                    </div>
+                </div>
+            `;
+            
+            showModal(cartHTML);
+        }
+
+        function removeFromCart(itemId, store) {
+            cartItems = cartItems.filter(item => !(item.id === itemId && item.store === store));
+            saveCartData();
+            updateCartBadge();
+            closeModal();
+            showNotification('ลบสินค้าออกจากตะกร้าแล้ว');
+        }
+
+        function clearCart() {
+            if (confirm('ต้องการล้างตะกร้าสินค้าทั้งหมดใช่หรือไม่?')) {
+                cartItems = [];
+                saveCartData();
+                updateCartBadge();
+                closeModal();
+                showNotification('ล้างตะกร้าสินค้าแล้ว');
+            }
+        }
+
+        function checkout() {
+            if (cartItems.length === 0) return;
+            
+            const total = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            closeModal();
+            
+            showLoading();
+            setTimeout(() => {
+                hideLoading();
+                cartItems = [];
+                saveCartData();
+                updateCartBadge();
+                showNotification(`สั่งซื้อสำเร็จ! ยอดรวม ฿${total} 🎉`);
+            }, 2000);
+        }
+
+        // Address functions
+        function changeAddress() {
+            const newAddress = prompt('ใส่ที่อยู่ใหม่:', document.getElementById('deliveryAddress').textContent);
+            if (newAddress && newAddress.trim()) {
+                document.getElementById('deliveryAddress').textContent = newAddress.trim();
+                
+                const username = localStorage.getItem('currentUser');
+                localStorage.setItem(`deliveryAddress_${username}`, newAddress.trim());
+                
+                showNotification('เปลี่ยนที่อยู่จัดส่งแล้ว 📍');
+            }
+        }
+
+        // Favorite store functions
+        function toggleFavoriteStore() {
+            const storeNames = {
+                'tops': 'Tops Supermarket',
+                'gourmet': 'Gourmet Market',
+                'big-c': 'Big C Supercenter'
+            };
+            
+            const storeName = storeNames[currentStore];
+            const isFavorited = favoriteStores.includes(currentStore);
+            
+            if (isFavorited) {
+                favoriteStores = favoriteStores.filter(store => store !== currentStore);
+                showNotification(`ลบ ${storeName} จากรายการโปรดแล้ว`);
+            } else {
+                favoriteStores.push(currentStore);
+                showNotification(`เพิ่ม ${storeName} ในรายการโปรดแล้ว ⭐`);
+            }
+            
+            saveFavoriteStores();
+            updateFavoriteButton();
+        }
+
+        function updateFavoriteButton() {
+            const btn = document.querySelector('.favorite-btn');
+            if (favoriteStores.includes(currentStore)) {
+                btn.style.color = '#ff6b6b';
+                btn.innerHTML = '♥';
+            } else {
+                btn.style.color = '#666';
+                btn.innerHTML = '♡';
+            }
+        }
+
+        function saveFavoriteStores() {
+            const username = localStorage.getItem('currentUser');
+            localStorage.setItem(`favoriteStores_${username}`, JSON.stringify(favoriteStores));
+        }
+
+        // Search functionality
+        function setupSearchFunctionality() {
+            const searchInput = document.getElementById('searchInput');
+            
+            searchInput.addEventListener('input', function() {
+                const query = this.value.toLowerCase().trim();
+                
+                if (query === '') {
+                    resetProductDisplay();
+                    return;
+                }
+                
+                filterProducts(query);
+            });
+            
+            searchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    performSearch(this.value.trim());
+                }
+            });
+        }
+
+        function filterProducts(query) {
+            const productCards = document.querySelectorAll('.product-card');
+            
+            productCards.forEach(card => {
+                const title = card.querySelector('.product-title').textContent.toLowerCase();
+                
+                if (title.includes(query)) {
+                    card.style.display = 'block';
+                    card.style.transform = 'scale(1.02)';
+                    card.style.boxShadow = '0 8px 25px rgba(255, 107, 107, 0.2)';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        function resetProductDisplay() {
+            const productCards = document.querySelectorAll('.product-card');
+            
+            productCards.forEach(card => {
+                card.style.display = 'block';
+                card.style.transform = '';
+                card.style.boxShadow = '0 4px 15px rgba(0, 0, 0, 0.1)';
+            });
+        }
+
+        function performSearch(query) {
+            if (!query) return;
+            
+            showLoading();
+            
+            setTimeout(() => {
+                hideLoading();
+                showNotification(`ค้นหา "${query}" พบ ${document.querySelectorAll('.product-card[style*="block"]').length} รายการ`);
+            }, 800);
+        }
+
+        // Menu functions
+        function showMenu() {
+            const menuOptions = [
+                { text: '🛒 ดูตะกร้าสินค้า', action: viewCart },
+                { text: '📍 เปลี่ยนที่อยู่', action: changeAddress },
+                { text: '⭐ ร้านค้าโปรด', action: showFavoriteStores },
+                { text: '📋 ประวัติการสั่งซื้อ', action: showOrderHistory },
+                { text: '🎫 คูปองส่วนลด', action: showCoupons }
+            ];
+            
+            let menuHTML = '<h3 style="margin-bottom: 15px; color: #ff6b6b;">เมนู</h3>';
+            menuOptions.forEach((option, index) => {
+                menuHTML += `
+                    <div onclick="handleMenuAction(${index})" style="padding: 15px; border-bottom: 1px solid #f0f0f0; cursor: pointer; transition: background 0.3s ease;" 
+                         onmouseover="this.style.background='#f8f9fa'" onmouseout="this.style.background='white'">
+                        ${option.text}
+                    </div>
+                `;
+            });
+            
+            showModal(menuHTML);
+            
+            // Store menu actions in global variable for access
+            window.menuActions = menuOptions.map(option => option.action);
+        }
+
+        function handleMenuAction(index) {
+            closeModal();
+            if (window.menuActions && window.menuActions[index]) {
+                window.menuActions[index]();
+            }
+        }
+
+        function showFavoriteStores() {
+            if (favoriteStores.length === 0) {
+                showNotification('ยังไม่มีร้านค้าโปรด');
+                return;
+            }
+            
+            const storeNames = {
+                'tops': 'Tops Supermarket',
+                'gourmet': 'Gourmet Market',
+                'big-c': 'Big C Supercenter'
+            };
+            
+            let favHTML = '<h3 style="margin-bottom: 15px; color: #ff6b6b;">ร้านค้าโปรด</h3>';
+            favoriteStores.forEach(store => {
+                favHTML += `
+                    <div style="padding: 12px; margin-bottom: 8px; background: #f8f9fa; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
+                        <span>${storeNames[store]}</span>
+                        <button onclick="selectStore('${store}'); closeModal();" style="background: #ff6b6b; color: white; border: none; padding: 6px 12px; border-radius: 6px; font-size: 12px;">เลือก</button>
+                    </div>
+                `;
+            });
+            
+            showModal(favHTML);
+        }
+
+        function showOrderHistory() {
+            const history = JSON.parse(localStorage.getItem(`orderHistory_${localStorage.getItem('currentUser')}`) || '[]');
+            
+            if (history.length === 0) {
+                showNotification('ยังไม่มีประวัติการสั่งซื้อ');
+                return;
+            }
+            
+            let historyHTML = '<h3 style="margin-bottom: 15px; color: #ff6b6b;">ประวัติการสั่งซื้อ</h3>';
+            history.slice(0, 5).forEach(order => {
+                historyHTML += `
+                    <div style="padding: 12px; margin-bottom: 8px; background: #f8f9fa; border-radius: 8px;">
+                        <div style="font-weight: 600;">คำสั่งซื้อ #${order.id}</div>
+                        <div style="font-size: 12px; color: #666;">${new Date(order.date).toLocaleDateString('th-TH')}</div>
+                        <div style="color: #ff6b6b; font-weight: 600;">฿${order.total}</div>
+                    </div>
+                `;
+            });
+            
+            showModal(historyHTML);
+        }
+
+        function showCoupons() {
+            const coupons = [
+                { code: 'MOMMEAL10', discount: 10, desc: 'ลด 10% สำหรับคำสั่งซื้อแรก' },
+                { code: 'FRESH20', discount: 20, desc: 'ลด 20 บาท เมื่อซื้อผักสด' },
+                { code: 'FAMILY50', discount: 50, desc: 'ลด 50 บาท เมื่อซื้อครบ 500 บาท' }
+            ];
+            
+            let couponHTML = '<h3 style="margin-bottom: 15px; color: #ff6b6b;">คูปองส่วนลด</h3>';
+            coupons.forEach(coupon => {
+                couponHTML += `
+                    <div style="padding: 15px; margin-bottom: 10px; background: linear-gradient(135deg, #fff5f5, #fff); border: 1px dashed #ff6b6b; border-radius: 8px;">
+                        <div style="font-weight: 600; color: #ff6b6b;">${coupon.code}</div>
+                        <div style="font-size: 12px; color: #666; margin: 5px 0;">${coupon.desc}</div>
+                        <button onclick="copyCoupon('${coupon.code}')" style="background: #ff6b6b; color: white; border: none; padding: 4px 8px; border-radius: 4px; font-size: 10px;">คัดลอก</button>
+                    </div>
+                `;
+            });
+            
+            showModal(couponHTML);
+        }
+
+        function copyCoupon(code) {
+            navigator.clipboard.writeText(code).then(() => {
+                showNotification(`คัดลอกคูปอง ${code} แล้ว!`);
+                closeModal();
+            });
+        }
+
+        // Modal functions
+        function showModal(content) {
+            const modal = document.createElement('div');
+            modal.className = 'modal';
+            modal.innerHTML = `
+                <div class="modal-content">
+                    ${content}
+                    <button onclick="closeModal()" style="width: 100%; margin-top: 20px; padding: 10px; background: #f0f0f0; border: none; border-radius: 8px; color: #666;">ปิด</button>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            
+            setTimeout(() => modal.classList.add('show'), 100);
+            
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    closeModal();
+                }
+            });
+            
+            window.currentModal = modal;
+        }
+
+        function closeModal() {
+            if (window.currentModal) {
+                window.currentModal.classList.remove('show');
+                setTimeout(() => {
+                    if (window.currentModal && window.currentModal.parentNode) {
+                        window.currentModal.parentNode.removeChild(window.currentModal);
+                    }
+                    window.currentModal = null;
+                }, 300);
+            }
+        }
+
+        // Navigation
+        function goBack() {
+            showLoading();
+            setTimeout(() => {
+                window.location.href = 'home.html';
+            }, 300);
+        }
+
+        function navigateTo(page) {
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            event.target.closest('.nav-item').classList.add('active');
+            
+            showLoading();
+            setTimeout(() => {
+                hideLoading();
+                
+                switch(page) {
+                    case 'home':
+                        window.location.href = 'home.html';
+                        break;
+                    case 'plan':
+                        window.location.href = 'plan.html';
+                        break;
+                    case 'favorite':
+                        window.location.href = 'favorite.html';
+                        break;
+                    case 'mart':
+                        window.location.href = 'mart.html';
+                        // Already on mart page
+                        break;
+                    case 'community':
+                        window.location.href = 'community.html';
+                        //showNotification('💬 หน้าชุมชน - กำลังพัฒนา');
+                        break;
+                }
+            }, 500);
+        }
+
+        // Notification function
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 70px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
+                color: white;
+                padding: 12px 20px;
+                border-radius: 25px;
+                font-size: 14px;
+                font-weight: 500;
+                z-index: 1000;
+                box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+                animation: slideDown 0.3s ease;
+                max-width: 300px;
+                text-align: center;
+            `;
+            
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideUp 0.3s ease forwards';
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 300);
+            }, 2500);
+        }
+
+        // Add CSS animations for notifications
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideDown {
+                from { transform: translateX(-50%) translateY(-100%); opacity: 0; }
+                to { transform: translateX(-50%) translateY(0); opacity: 1; }
+            }
+            @keyframes slideUp {
+                from { transform: translateX(-50%) translateY(0); opacity: 1; }
+                to { transform: translateX(-50%) translateY(-100%); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Initialize page when loaded
+        document.addEventListener('DOMContentLoaded', initPage);
+
+        // Auto-select default store
+        setTimeout(() => {
+            selectStore('tops');
+        }, 1000);
+
+        console.log('🛒 Mart Page - Loaded successfully!');
+    </script>
+</body>
+</html>
